@@ -23,12 +23,13 @@
 
 **Antigravity Kaggle Arena** is an autonomous, self-improving machine learning framework designed to participate, iterate, and achieve **Gold-Medal / #1 World Leaderboard** standards across Kaggle competitions.
 
-By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with specialized community skills (`nvidia-kaggle-skill` by NVIDIA and `agentic-kaggle-skill` by FrankS-IntelLab), the arena automates the complete competitive lifecycle:
+By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with specialized community skills ([`nvidia-kaggle`](https://github.com/NVIDIA/nvidia-kaggle) by NVIDIA and [`scientific-agent-skills`](https://github.com/K-Dense-AI/scientific-agent-skills) by K-Dense-AI), the arena automates the complete competitive lifecycle:
 1. **Competition Intelligence**: Autonomous retrieval and semantic distillation of official metrics, rules, and Grandmaster solution writeups via [`nvidia-kaggle-skill`](https://github.com/NVIDIA/nvidia-kaggle).
-2. **Leakage-Free Validation First**: Strict in-loop target encoding and stratified K-Fold schemas via [`agentic-kaggle-skill`](https://github.com/FrankS-IntelLab/agentic-kaggle-skill).
-3. **Advanced Feature Engineering**: Multi-scale continuous binning, digit modulo residuals, domain physiological ratios, and group Z-score aggregations.
-4. **Multi-Family Heterogeneous Modeling**: Ensembles combining asymmetric trees (LightGBM), symmetric oblivious trees (CatBoost), exact depth-wise trees (XGBoost), and Deep Residual Tabular Networks (PyTorch).
-5. **Continuous Self-Improvement**: Automated logging of architectural lessons into an evolutionary knowledge base for subsequent challenges.
+2. **Domain & Scientific Discovery**: Statistical, clinical, and tabular feature exploration powered by the extensive library of [`scientific-agent-skills`](https://github.com/K-Dense-AI/scientific-agent-skills).
+3. **Leakage-Free Validation First**: Strict in-loop target encoding and stratified K-Fold schemas.
+4. **Advanced Feature Engineering**: Multi-scale continuous binning, digit modulo residuals, domain physiological ratios, and group Z-score aggregations.
+5. **Multi-Family Heterogeneous Modeling**: Ensembles combining asymmetric trees (LightGBM), symmetric oblivious trees (CatBoost), exact depth-wise trees (XGBoost), and Deep Residual Tabular Networks (PyTorch).
+6. **Continuous Self-Improvement**: Automated logging of architectural lessons into an evolutionary knowledge base for subsequent challenges.
 
 ---
 

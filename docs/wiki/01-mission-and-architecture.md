@@ -23,11 +23,12 @@ The system synthesizes two cutting-edge agentic toolkits:
 └───────────────────┬────────────────────────────────┬───────────────────┘
                     │                                │
                     ▼                                ▼
-     [NVIDIA Kaggle Skill]                 [Agentic Kaggle Skill]
-     - Kaggle API / CLI automation         - Validation-first fold design
-     - Metric & competition extraction     - Scaffold project layouts
-     - Top writeups semantic ingest        - Zero-leakage OOF architectures
-     - Discussion mining                   - Producer-consumer kernels
+     [NVIDIA Kaggle Skill]              [Scientific Agent Skills]
+     (NVIDIA / nvidia-kaggle)           (K-Dense-AI / scientific-agent-skills)
+     - Kaggle API / CLI automation      - Biomedical, clinical & stats tools
+     - Metric & competition extraction  - Exploratory feature formulations
+     - Top writeups semantic ingest     - Domain modeling & validation
+     - Discussion & kernel mining       - Over 160+ specialized skills
                     │                                │
                     └────────────────┬───────────────┘
                                      │
