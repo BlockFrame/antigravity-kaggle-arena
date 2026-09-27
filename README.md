@@ -44,16 +44,51 @@ By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with spec
 ## 🏗️ Architecture & Operating Flow
 
 ```mermaid
-flowchart TD
-    A[Kaggle Competition Target] --> B[Intelligence Gathering\n(nvidia-kaggle-skill)]
-    B --> C[Scaffold Project Structure\n(agentic-kaggle-skill)]
-    C --> D[Stratified Split & CV Design]
-    D --> E[Multi-Scale Feature Matrix V2\n(115+ Engineered Features)]
-    E --> F[In-Loop Smooth Target Encoding\n(Zero-Leakage Guarantee)]
-    F --> G[Multi-Model Multi-Seed Training\n(CatBoost + LightGBM + XGBoost + ResMLP)]
-    G --> H[Optuna Bayesian Rank Blending]
-    H --> I[Submission Sanity Check Gate\n(verify_submission.py)]
-    I --> J[Continuous Learning Log\n(EVOLUTION_LOG.md)]
+flowchart TB
+    subgraph S1["1. INTELLIGENCE & DOMAIN DISCOVERY"]
+        direction LR
+        KAG["Kaggle Competition Target"] --> INTEL["nvidia-kaggle-skill\n• Rules & Constraints\n• Winner Writeups (Masaya #1)"]
+        SCI["K-Dense Scientific Skills\n• Clinical / Domain Priors\n• Statistical Explorations"] --> INTEL
+    end
+
+    subgraph S2["2. RIGOROUS VALIDATION FOUNDATION"]
+        direction LR
+        INTEL --> SCAFF["Scaffold Competition\nWorkspace Layout"]
+        SCAFF --> SPLIT["Deterministic Folds (5-Fold Stratified)\n• Strict Train/Val Partitioning\n• Frozen Fold IDs"]
+    end
+
+    subgraph S3["3. ZERO-LEAKAGE FEATURE PIPELINE"]
+        direction TB
+        FE_ENG["Feature Matrix V2 (115+ Features)\n• Modulo Remainder Residuals (col % 10, % 5)\n• Multi-Scale Quantile & Uniform Binning\n• Domain Formulas (Tanaka Cardiac Reserve, BP/Chol)"]
+        TE_LOOP["In-Loop Bayesian Target Encoding\n(Strictly fitted on Train Folds only)"]
+        Z_SCORE["Group Normalized Z-Scores\n(Relative Deviations by Category)"]
+        FE_ENG --> TE_LOOP --> Z_SCORE
+    end
+
+    subgraph S4["4. HETEROGENEOUS MULTI-MODEL STACK"]
+        direction LR
+        M1["CatBoost (Multi-Seed 42, 1337)\nSymmetric Oblivious Trees"]
+        M2["LightGBM (Multi-Seed 42, 1337)\nLeaf-wise Asymmetric Trees"]
+        M3["XGBoost\nExact Gradient Boosting"]
+        M4["TabularResMLP (PyTorch)\nLayerNorm + SiLU + Skip Connections"]
+    end
+
+    subgraph S5["5. META-ENSEMBLING & SANITY GATE"]
+        direction LR
+        OPT["Optuna Bayesian Optimization\n• Percentile Rank Blending\n• 81.6% CatBoost + 18.4% LightGBM"]
+        GATE["verify_submission.py\n• Zero NaN / Inf Check\n• Row Alignment Check\n• Probability Bounds [0, 1]"]
+        OPT --> GATE
+    end
+
+    subgraph S6["6. CONTINUOUS EVOLUTIONARY LEARNING"]
+        direction LR
+        GATE --> SUBMIT["Final Scored Submission\n(Target: 0.95536)"]
+        SUBMIT --> LOG["Evolution Knowledge Base\n(EVOLUTION_LOG.md)\n• Retrospective Auditing\n• Autonomous Skill Upgrades"]
+    end
+
+    SPLIT --> FE_ENG
+    Z_SCORE --> S4
+    S4 --> OPT
 ```
 
 ---
