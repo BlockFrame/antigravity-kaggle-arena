@@ -35,9 +35,9 @@ By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with spec
 
 ## 🏆 Arena Leaderboard & Competition Tracker
 
-| Competition ID | Track / Domain | Metric | Arena CV Score | Official #1 World LB | Result Status | Detailed Solution Report |
-|---|---|---|:---:|:---:|:---:|:---:|
-| [`playground-series-s6e2`](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **`0.95536`** | `0.95535` | 🥇 **#1 Surpassed** | [Full Report & Walkthrough](docs/competitions/playground-series-s6e2.md) |
+| Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Arena CV Score | Official #1 World LB | Result Status | Detailed Solution Report |
+|---|---|---|---|:---:|:---:|:---:|:---:|
+| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **`0.95536`** | `0.95535` | 🥇 **#1 Surpassed** | [Full Report & Walkthrough](docs/competitions/playground-series-s6e2.md) |
 
 ---
 
