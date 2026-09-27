@@ -1,0 +1,2 @@
+Notification: Checked arXiv API terms at https://info.arxiv.org/help/api/index.html. Always verify license terms for retrieved research papers.
+Timestamp: 2026-09-27T22:18:40+02:00

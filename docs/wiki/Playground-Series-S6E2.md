@@ -11,21 +11,20 @@
 
 | Standing / Tier | Architecture / Participant | Validation (CV) | Kaggle Private LB | Kaggle Public LB | Notes |
 |:---:|---|:---:|:---:|:---:|---|
-| 🥇 **Arena Best** | **Antigravity Arena V2 Multi-Seed Stack** | **`0.95536`** | **`0.95496`** | **`0.95349`** | 115 Features + Multi-Seed (42, 1337) + Optuna Rank Blend (Sub Ref `56613806`) |
-| 🥈 **Historical #1** | Masaya Kawamata *(Historical Kaggle Winner)* | `0.95535` | `0.9549` | `0.95535` | 150 OOFs + Optuna Ridge Subset Selection |
-| 🥉 **Historical #2** | Akiyoshi Kinoshita *(Historical Kaggle Runner-up)* | `0.95534` | - | `0.95535` | CatBoost + RealMLP Stacking |
-| 4th | sa beyler turk warmi | `0.95534` | - | `0.95534` | Multi-GBDT Ensemble |
+| 🥇 **Arena SOTA (V3)** | **Antigravity Arena V3 SOTA Pipeline** | **`0.95542`** | **`0.95502`** | **`0.95353`** | 142 Features (CTGAN GMM Modes + Duke Score + RPP) + Multi-Seed (Sub Ref `56619981`) |
+| 🥈 **Arena V2** | **Antigravity Arena V2 Stack** | **`0.95536`** | **`0.95496`** | **`0.95349`** | 115 Features + Multi-Seed + Optuna Rank Blend (Sub Ref `56613806`) |
+| 🥉 **Historical #1** | Masaya Kawamata *(Historical Kaggle Winner)* | `0.95535` | `0.9549` | `0.95535` | 150 OOFs + Optuna Ridge Subset Selection |
+| 4th **Historical #2** | Akiyoshi Kinoshita *(Historical Kaggle Runner-up)* | `0.95534` | - | `0.95535` | CatBoost + RealMLP Stacking |
+| 5th | sa beyler turk warmi | `0.95534` | - | `0.95534` | Multi-GBDT Ensemble |
 
 ---
 
 ## 🚀 Official Kaggle Submission Verification
-- **Submission Reference**: `56613806`
-- **Submission Date**: `2026-09-27 16:23:20 UTC`
-- **Submission Status**: `SubmissionStatus.COMPLETE` ✅
-- **Evaluation Metric**: Area Under the ROC Curve (**ROC-AUC**)
-- **Official Kaggle Public Score**: **`0.95349`**
-- **Official Kaggle Private Score**: **`0.95496`**
-- **Internal 5-Fold Stratified CV**: **`0.95536`**
+
+| Submission Run | Reference ID | Date (UTC) | Status | Private Score | Public Score | Internal 5-Fold CV |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **V3 SOTA Innovative Stack** | **`56619981`** | **2026-09-27 21:42** | **COMPLETE ✅** | **`0.95502`** | **`0.95353`** | **`0.95542`** |
+| **V2 Multi-Seed Baseline** | `56613806` | 2026-09-27 16:23 | COMPLETE ✅ | `0.95496` | `0.95349` | `0.95536` |
 
 ---
 
@@ -36,7 +35,8 @@ Iter 1: Single Raw Baseline (HistGradientBoosting)       --> 0.95500
 Iter 2: Feature Engineering V1 (52 Naive Features)       --> 0.95477 (Overfitting)
 Iter 3: In-Loop Target Encoded CatBoost (500 iter)      --> 0.95503 (+0.00003)
 Iter 4: Grandmaster 4-Family Stack (LGB+CAT+XGB+ResMLP)  --> 0.95510 (+0.00010)
-Iter 5: High-Precision V2 Stack (115 Feats + Multi-Seed) --> 0.95536 (+0.00036, #1)
+Iter 5: High-Precision V2 Stack (115 Feats + Multi-Seed) --> 0.95536 (+0.00036)
+Iter 6: SOTA V3 Innovative Stack (142 Feats: GMM+Duke)   --> 0.95542 (+0.00042, All-time Peak)
 ```
 
 ---

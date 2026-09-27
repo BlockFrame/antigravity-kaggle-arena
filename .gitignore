@@ -58,3 +58,4 @@ models/*.txt
 .DS_Store
 .AppleDouble
 .LSOverride
+catboost_info/
