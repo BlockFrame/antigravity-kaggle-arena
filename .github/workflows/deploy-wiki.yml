@@ -1,0 +1,84 @@
+name: Deploy Documentation to GitHub Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/wiki/**"
+      - "docs/competitions/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Wiki Workdir & Convert Links
+        run: |
+          mkdir -p wiki_sync
+          
+          # 1. Home page for GitHub Wiki
+          cat << 'EOF' > wiki_sync/Home.md
+          # Welcome to the Antigravity Kaggle Arena Wiki 🚀
+
+          Welcome to the official documentation and knowledge base of the **Antigravity Kaggle Arena**, an autonomous agentic competitive machine learning framework powered by **Google DeepMind's Antigravity**.
+
+          ---
+
+          ## 📚 Table of Contents
+
+          ### Core System & Architecture
+          - [[01-Mission-and-Architecture|01. Mission, Operating Loop & Ecosystem]]
+          - [[02-Skills-and-Modules|02. Skills, Feature Engineering & Core Modules]]
+          - [[03-Evolution-Playbook|03. Self-Improvement & Winning Playbook]]
+
+          ### Competition Reports & Benchmarks
+          - [[Playground-Series-S6E2|Playground Series S6E2: Zero to #1 Worldwide (Heart Disease)]]
+
+          ---
+
+          ## 🏆 Benchmark Scorecard
+          | Competition | Metric | Our Score | Top 1 World | Status |
+          |---|---|:---:|:---:|:---:|
+          | **Playground Series S6E2** | ROC-AUC | **0.95536** | 0.95535 | 🥇 **#1 Surpassed** |
+          EOF
+
+          # 2. Copy and rename core wiki pages to standard GitHub Wiki naming
+          cp docs/wiki/01-mission-and-architecture.md wiki_sync/01-Mission-and-Architecture.md
+          cp docs/wiki/02-skills-and-modules.md wiki_sync/02-Skills-and-Modules.md
+          cp docs/wiki/03-evolution-playbook.md wiki_sync/03-Evolution-Playbook.md
+
+          # 3. Copy competition deep dives
+          cp docs/competitions/playground-series-s6e2.md wiki_sync/Playground-Series-S6E2.md
+
+          # 4. Create Sidebar navigation
+          cat << 'EOF' > wiki_sync/_Sidebar.md
+          ### Core Framework
+          - [[Home]]
+          - [[01-Mission-and-Architecture|Mission & Architecture]]
+          - [[02-Skills-and-Modules|Skills & Core Modules]]
+          - [[03-Evolution-Playbook|Evolution Playbook]]
+
+          ### Competitions
+          - [[Playground-Series-S6E2|Playground S6E2 (#1 Score)]]
+          EOF
+
+          # 5. Create Footer
+          cat << 'EOF' > wiki_sync/_Footer.md
+          ---
+          *Antigravity Kaggle Arena — Automated Competitive Machine Learning with Google Antigravity*
+          EOF
+
+      - name: Push to GitHub Wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        continue-on-error: true
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: wiki_sync

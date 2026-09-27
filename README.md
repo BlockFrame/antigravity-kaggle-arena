@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/google-deepmind/antigravity/main/assets/banner.png" alt="Antigravity Kaggle Arena Banner" width="100%" onerror="this.style.display='none'"/>
+  <img src="./assets/banner.svg" alt="Antigravity Kaggle Arena Banner" width="100%"/>
 </p>
 
 <h1 align="center">🚀 Antigravity Kaggle Arena</h1>
@@ -23,9 +23,9 @@
 
 **Antigravity Kaggle Arena** is an autonomous, self-improving machine learning framework designed to participate, iterate, and achieve **Gold-Medal / #1 World Leaderboard** standards across Kaggle competitions.
 
-By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with domain-specialized skills (`nvidia-kaggle-skill` and `agentic-kaggle-skill`), the arena automates the complete competitive lifecycle:
-1. **Competition Intelligence**: Autonomous retrieval and semantic distillation of official metrics, rules, and Grandmaster solution writeups.
-2. **Leakage-Free Validation First**: Strict in-loop target encoding and stratified K-Fold schemas.
+By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with specialized community skills (`nvidia-kaggle-skill` by NVIDIA and `agentic-kaggle-skill` by FrankS-IntelLab), the arena automates the complete competitive lifecycle:
+1. **Competition Intelligence**: Autonomous retrieval and semantic distillation of official metrics, rules, and Grandmaster solution writeups via [`nvidia-kaggle-skill`](https://github.com/NVIDIA/nvidia-kaggle).
+2. **Leakage-Free Validation First**: Strict in-loop target encoding and stratified K-Fold schemas via [`agentic-kaggle-skill`](https://github.com/FrankS-IntelLab/agentic-kaggle-skill).
 3. **Advanced Feature Engineering**: Multi-scale continuous binning, digit modulo residuals, domain physiological ratios, and group Z-score aggregations.
 4. **Multi-Family Heterogeneous Modeling**: Ensembles combining asymmetric trees (LightGBM), symmetric oblivious trees (CatBoost), exact depth-wise trees (XGBoost), and Deep Residual Tabular Networks (PyTorch).
 5. **Continuous Self-Improvement**: Automated logging of architectural lessons into an evolutionary knowledge base for subsequent challenges.
