@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+kaggle_env/
+
+# Kaggle credentials & Tokens (NEVER COMMIT)
+kaggle.json
+access_token
+.kaggle/
+*.token
+
+# Large competition datasets, models and local weights
+input/
+*.zip
+*.tar.gz
+*.parquet
+*.h5
+*.ckpt
+*.pt
+*.bin
+models/*.pt
+models/*.cbm
+models/*.txt
+
+# macOS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
