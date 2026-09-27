@@ -20,7 +20,7 @@ Welcome to the official documentation and knowledge base of the **Antigravity Ka
 
 | Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Date Achieved | Arena CV Score | Official Kaggle Score (Private / Public) | Benchmark World LB | Status | Detailed Report |
 |---|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Sep 27, 2026** | **`0.95542`** | **`0.95502`** / **`0.95353`** *(Ref: 56619981)* | `0.95535` | 🥇 **#1 Benchmark Surpassed** | [[Playground-Series-S6E2|Read Report 📖]] |
+| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Sep 28, 2026** | **`0.95542`** | **`0.95508`** / **`0.95359`** *(Ref: 56620791)* | `0.95535` | 🥇 **#1 Benchmark Surpassed** | [[Playground-Series-S6E2|Read Report 📖]] |
 
 ---
 
