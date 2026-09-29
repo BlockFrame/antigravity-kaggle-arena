@@ -1,5 +1,10 @@
 # Competition Case Study: Playground Series Season 6 Episode 2
 
+> **Historical V1–V5 record.** Some earlier comparisons in this document mixed
+> public/private leaderboard columns and combined-data OOF. For the corrected
+> score audit and current V6 candidate, see the
+> [2026-09-28 reproducibility audit](playground-series-s6e2-audit.md).
+
 **Competition Name**: [Playground Series - Season 6, Episode 2](https://www.kaggle.com/competitions/playground-series-s6e2)  
 **Task Type**: Binary Tabular Classification (Heart Disease Presence vs Absence)  
 **Dataset Scale**: 630,303 samples (630,000 synthetic + 303 original clinical records)  

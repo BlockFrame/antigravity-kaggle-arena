@@ -37,7 +37,7 @@ By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with spec
 
 | Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Date Achieved | Arena CV Score | Official Kaggle Score (Private / Public) | Benchmark World LB | Status | Detailed Solution Report |
 |---|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Sep 28, 2026** | **`0.955411`** *(Leak-Free)* | **`0.95508`** / **`0.95359`** *(Ref: 56620791)* | `0.95535` | 🥇 **#1 Benchmark Surpassed** | [Full Report & Walkthrough](docs/competitions/playground-series-s6e2.md) |
+| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Sep 29, 2026** | **`0.955734`** *(V7 cross-fitted OOF)* | **`0.95532` private / `0.95391` public** *(V7, Ref: 56685579)* | `0.95535` private *(winner)* | ✅ **Within `0.00003` of winner private score** | [Audit & Next Steps](docs/competitions/playground-series-s6e2-audit.md) |
 
 ---
 
@@ -142,11 +142,21 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Run the Winning Playground S6E2 Pipeline
+### 3. Run the V6 OHE-logistic diversity model
 ```bash
-# Run feature engineering, 5-fold multi-seed training and Optuna blending
-python src/competitions/playground_s6e2/train_v2_multiseed.py
+python src/competitions/playground_s6e2/train_v6_ohe_logistic.py \
+  --train /path/to/train.csv \
+  --test /path/to/test.csv \
+  --combined /path/to/train_combined.csv \
+  --output-dir artifacts/v6_ohe_logistic \
+  --c 3.0
 ```
+
+This writes aligned OOF/test predictions, fold IDs, metrics, and a local
+submission candidate. It never submits to Kaggle. The conservative V6 rank
+blend can then be built with `build_v6_rank_blend.py`; see the
+[competition audit](docs/competitions/playground-series-s6e2-audit.md) for the
+measured result and command.
 
 ---
 
@@ -154,7 +164,7 @@ python src/competitions/playground_s6e2/train_v2_multiseed.py
 - 📘 [Mission, Architecture & Agentic Workflow](docs/wiki/01-mission-and-architecture.md)
 - 🛠️ [Skills & Core Modules Specification](docs/wiki/02-skills-and-modules.md)
 - 🧠 [Self-Improvement & Evolution Playbook](docs/wiki/03-evolution-playbook.md)
-- 🔬 [Playground Series S6E2: Zero to #1 Walkthrough](docs/competitions/playground-series-s6e2.md)
+- 🔬 [Playground Series S6E2: validation-first competition walkthrough](docs/competitions/playground-series-s6e2.md)
 
 ---
 

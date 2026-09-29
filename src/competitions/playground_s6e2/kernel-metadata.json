@@ -1,0 +1,20 @@
+{
+  "id": "stefanorossi1/antigravity-s6e2-v7-realmlp-gpu",
+  "title": "Antigravity S6E2 V7 RealMLP GPU",
+  "code_file": "train_v7_realmlp.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "cdeotte/s6e4-original-dataset",
+    "faizanshaikh20/pytabkit-model"
+  ],
+  "competition_sources": [
+    "playground-series-s6e2"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}
