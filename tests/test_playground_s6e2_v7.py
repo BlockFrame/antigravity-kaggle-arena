@@ -114,5 +114,35 @@ class OriginalStatisticsTests(unittest.TestCase):
         self.assertTrue(all(test[c].dtype == np.float32 for c in added))
 
 
+class BinDigitFeatureTests(unittest.TestCase):
+    def test_features_are_deterministic_finite_and_train_fitted(self) -> None:
+        train = pd.DataFrame(
+            {
+                "continuous": np.arange(20, dtype=float),
+                "binary": [0, 1] * 10,
+            }
+        )
+        test = pd.DataFrame({"continuous": [-10.0, 50.0], "binary": [0, 1]})
+
+        first_train, first_test, added = V7.add_bin_digit_features(
+            train,
+            test,
+            base_features=["continuous", "binary"],
+        )
+        second_train, second_test, second_added = V7.add_bin_digit_features(
+            train,
+            test,
+            base_features=["continuous", "binary"],
+        )
+
+        self.assertEqual(added, second_added)
+        self.assertTrue(added)
+        self.assertFalse(any("binary" in column for column in added))
+        pd.testing.assert_frame_equal(first_train, second_train)
+        pd.testing.assert_frame_equal(first_test, second_test)
+        self.assertTrue(np.isfinite(first_train[added].to_numpy()).all())
+        self.assertTrue(np.isfinite(first_test[added].to_numpy()).all())
+
+
 if __name__ == "__main__":
     unittest.main()

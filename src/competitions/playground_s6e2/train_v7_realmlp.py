@@ -108,7 +108,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("/kaggle/working/v7_realmlp"),
+        default=Path("/kaggle/working/v14_realmlp_bin_digit"),
     )
     parser.add_argument("--fold-file", type=Path)
     parser.add_argument("--folds", type=int, default=5)
@@ -124,6 +124,18 @@ def parse_args() -> argparse.Namespace:
         default="all_categorical",
     )
     parser.add_argument("--hybrid-cardinality", type=int, default=10)
+    parser.add_argument(
+        "--feature-set",
+        choices=("base", "bin_digit"),
+        default="bin_digit",
+        help="Unsupervised feature representation applied before RealMLP.",
+    )
+    parser.add_argument(
+        "--original-stats",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Add target statistics derived only from the original dataset.",
+    )
     parser.add_argument("--original-smoothing", type=float, default=10.0)
     parser.add_argument(
         "--original-pairs",
@@ -303,6 +315,74 @@ def add_original_statistics(
     return train_out, test_out, added
 
 
+def add_bin_digit_features(
+    train_features: pd.DataFrame,
+    test_features: pd.DataFrame,
+    *,
+    base_features: list[str],
+    n_bins: int = 10,
+) -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
+    """Add label-free binnings and decimal digits for non-binary numeric columns.
+
+    Bin boundaries are learned from competition training features only.  The
+    resulting columns are categorical representations, matching the winning
+    solution's BASE+BIN+DIGIT+ALL_CATS family without target leakage.
+    """
+    if n_bins < 2:
+        raise ValueError("n_bins must be at least 2")
+
+    train_out = train_features.copy()
+    test_out = test_features.copy()
+    added: list[str] = []
+
+    for column in base_features:
+        train_values = pd.to_numeric(train_features[column], errors="raise")
+        test_values = pd.to_numeric(test_features[column], errors="raise")
+        if train_values.nunique(dropna=True) <= 10:
+            continue
+
+        safe = _safe_name((column,))
+        finite_train = train_values[np.isfinite(train_values)]
+        if finite_train.empty:
+            continue
+
+        quantile_edges = np.unique(
+            np.quantile(finite_train, np.linspace(0.0, 1.0, n_bins + 1))
+        )
+        width_edges = np.linspace(
+            float(finite_train.min()), float(finite_train.max()), n_bins + 1
+        )
+        for label, edges in (("qbin", quantile_edges), ("wbin", width_edges)):
+            name = f"feat_{safe}_{label}{n_bins}"
+            interior = edges[1:-1]
+            train_out[name] = np.searchsorted(interior, train_values, side="right")
+            test_out[name] = np.searchsorted(interior, test_values, side="right")
+            added.append(name)
+
+        # Coarse rounding creates a representation distinct from fixed-width
+        # bins because it anchors boundaries at human-readable multiples.
+        span = float(finite_train.max() - finite_train.min())
+        step = max(1.0, 10.0 ** math.floor(math.log10(max(span / n_bins, 1.0))))
+        rounded_name = f"feat_{safe}_round"
+        train_out[rounded_name] = np.floor(train_values / step).astype("int32")
+        test_out[rounded_name] = np.floor(test_values / step).astype("int32")
+        added.append(rounded_name)
+
+        # Integer digits plus the first decimal digit expose generator-like
+        # structure while retaining the unmodified source column.
+        train_scaled = np.rint(train_values.to_numpy(dtype="float64") * 10).astype("int64")
+        test_scaled = np.rint(test_values.to_numpy(dtype="float64") * 10).astype("int64")
+        for digit_name, divisor in (("decimal1", 1), ("units", 10), ("tens", 100), ("hundreds", 1000)):
+            name = f"feat_{safe}_{digit_name}"
+            train_out[name] = (np.abs(train_scaled) // divisor) % 10
+            test_out[name] = (np.abs(test_scaled) // divisor) % 10
+            added.append(name)
+
+    if train_out[added].isna().any().any() or test_out[added].isna().any().any():
+        raise RuntimeError("Bin/digit features contain missing values")
+    return train_out, test_out, added
+
+
 def prepare_representation(
     train_features: pd.DataFrame,
     test_features: pd.DataFrame,
@@ -467,7 +547,7 @@ def main() -> None:
         filename="test.csv",
         source_hint="playground-series-s6e2",
     )
-    if args.original is not None:
+    if args.original_stats and args.original is not None:
         args.original = resolve_input_path(
             args.original,
             filename="Heart_Disease_Prediction.csv",
@@ -476,11 +556,6 @@ def main() -> None:
     train = pd.read_csv(train_path)
     test = pd.read_csv(test_path)
     base_features = validate_competition_frames(train, test)
-    original = load_original_rows(
-        combined_path=args.combined,
-        original_path=args.original,
-        features=base_features,
-    )
     y = train[TARGET].eq(POSITIVE_LABEL).astype("int8").to_numpy()
     fold_ids = load_or_create_fold_artifact(
         fold_file,
@@ -490,18 +565,38 @@ def main() -> None:
         seed=args.seed,
     )
 
-    X, X_test, original_stat_features = add_original_statistics(
-        train[base_features],
-        test[base_features],
-        original,
-        base_features=base_features,
-        smoothing=args.original_smoothing,
-        include_pairs=args.original_pairs,
-    )
+    if args.original_stats:
+        original = load_original_rows(
+            combined_path=args.combined,
+            original_path=args.original,
+            features=base_features,
+        )
+        X, X_test, original_stat_features = add_original_statistics(
+            train[base_features],
+            test[base_features],
+            original,
+            base_features=base_features,
+            smoothing=args.original_smoothing,
+            include_pairs=args.original_pairs,
+        )
+        original_source_rows = len(original)
+    else:
+        X = train[base_features].copy()
+        X_test = test[base_features].copy()
+        original_stat_features = []
+        original_source_rows = 0
+    engineered_features: list[str] = []
+    if args.feature_set == "bin_digit":
+        X, X_test, engineered_features = add_bin_digit_features(
+            X,
+            X_test,
+            base_features=base_features,
+        )
+    representation_features = base_features + engineered_features
     X, X_test, categorical_features = prepare_representation(
         X,
         X_test,
-        base_features=base_features,
+        base_features=representation_features,
         representation=args.representation,
         hybrid_cardinality=args.hybrid_cardinality,
     )
@@ -588,7 +683,13 @@ def main() -> None:
     test_prediction = np.mean(test_predictions, axis=0)
     overall_auc = float(roc_auc_score(y, oof))
 
-    stem = f"realmlp_{args.representation}"
+    stem = (
+        f"realmlp_{args.representation}"
+        if args.original_stats
+        else f"realmlp_raw_{args.representation}"
+    )
+    if args.feature_set != "base":
+        stem = f"{stem}_{args.feature_set}"
     np.savez_compressed(
         args.output_dir / f"{stem}_oof.npz",
         id=train[ID_COLUMN].to_numpy(),
@@ -604,16 +705,18 @@ def main() -> None:
     metrics = {
         "model": "RealMLP_TD_Classifier",
         "representation": args.representation,
+        "feature_set": args.feature_set,
         "overall_oof_auc": overall_auc,
         "fold_auc": fold_auc,
         "fold_auc_mean": float(np.mean(fold_auc)),
         "fold_auc_std": float(np.std(fold_auc, ddof=1)),
         "elapsed_seconds_by_fold": elapsed_seconds,
         "competition_train_rows": int(len(train)),
-        "original_stat_source_rows": int(len(original)),
+        "original_stat_source_rows": int(original_source_rows),
         "feature_count": int(X.shape[1]),
         "categorical_feature_count": len(categorical_features),
         "original_stat_feature_count": len(original_stat_features),
+        "engineered_feature_count": len(engineered_features),
         "folds": args.folds,
         "seed": args.seed,
         "n_cv": args.n_cv,
@@ -621,6 +724,7 @@ def main() -> None:
         "n_epochs": args.n_epochs,
         "batch_size": args.batch_size,
         "device": resolve_device(args.device),
+        "original_stats": args.original_stats,
         "original_smoothing": args.original_smoothing,
         "original_pairs": args.original_pairs,
     }

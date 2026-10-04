@@ -25,6 +25,7 @@ from train_v7_realmlp import (
     ID_COLUMN,
     POSITIVE_LABEL,
     TARGET,
+    add_bin_digit_features,
     add_original_statistics,
     load_original_rows,
     parse_folds_to_run,
@@ -51,6 +52,16 @@ def parse_args() -> argparse.Namespace:
         default="all_categorical",
     )
     parser.add_argument("--hybrid-cardinality", type=int, default=10)
+    parser.add_argument(
+        "--feature-set",
+        choices=("base", "bin_digit"),
+        default="base",
+    )
+    parser.add_argument(
+        "--original-stats",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
     parser.add_argument("--original-smoothing", type=float, default=10.0)
     parser.add_argument(
         "--original-pairs",
@@ -93,11 +104,6 @@ def main() -> None:
     train = pd.read_csv(args.train)
     test = pd.read_csv(args.test)
     base_features = validate_competition_frames(train, test)
-    original = load_original_rows(
-        combined_path=args.combined,
-        original_path=args.original,
-        features=base_features,
-    )
     y = train[TARGET].eq(POSITIVE_LABEL).astype("int8").to_numpy()
     fold_ids = load_or_create_fold_artifact(
         fold_file,
@@ -106,18 +112,37 @@ def main() -> None:
         n_splits=args.folds,
         seed=args.seed,
     )
-    X, X_test, original_stat_features = add_original_statistics(
-        train[base_features],
-        test[base_features],
-        original,
-        base_features=base_features,
-        smoothing=args.original_smoothing,
-        include_pairs=args.original_pairs,
-    )
+    if args.original_stats:
+        original = load_original_rows(
+            combined_path=args.combined,
+            original_path=args.original,
+            features=base_features,
+        )
+        X, X_test, original_stat_features = add_original_statistics(
+            train[base_features],
+            test[base_features],
+            original,
+            base_features=base_features,
+            smoothing=args.original_smoothing,
+            include_pairs=args.original_pairs,
+        )
+    else:
+        X = train[base_features].copy()
+        X_test = test[base_features].copy()
+        original_stat_features = []
+
+    engineered_features: list[str] = []
+    if args.feature_set == "bin_digit":
+        X, X_test, engineered_features = add_bin_digit_features(
+            X,
+            X_test,
+            base_features=base_features,
+        )
+    representation_features = base_features + engineered_features
     X, X_test, categorical_features = prepare_representation(
         X,
         X_test,
-        base_features=base_features,
+        base_features=representation_features,
         representation=args.representation,
         hybrid_cardinality=args.hybrid_cardinality,
     )
@@ -210,6 +235,10 @@ def main() -> None:
     overall_auc = float(roc_auc_score(y, oof))
 
     stem = f"catboost_{args.boosting_type.lower()}_d{args.depth}_{args.representation}"
+    if not args.original_stats:
+        stem = f"{stem}_raw"
+    if args.feature_set != "base":
+        stem = f"{stem}_{args.feature_set}"
     np.savez_compressed(
         args.output_dir / f"{stem}_oof.npz",
         id=train[ID_COLUMN].to_numpy(),
@@ -226,6 +255,8 @@ def main() -> None:
         "boosting_type": args.boosting_type,
         "depth": args.depth,
         "representation": args.representation,
+        "feature_set": args.feature_set,
+        "original_stats": args.original_stats,
         "overall_oof_auc": overall_auc,
         "fold_auc": fold_auc,
         "fold_auc_mean": float(np.mean(fold_auc)),
@@ -235,6 +266,7 @@ def main() -> None:
         "feature_count": int(X.shape[1]),
         "categorical_feature_count": len(categorical_features),
         "original_stat_feature_count": len(original_stat_features),
+        "engineered_feature_count": len(engineered_features),
         "task_type": task_type,
         "folds": args.folds,
         "seed": args.seed,
