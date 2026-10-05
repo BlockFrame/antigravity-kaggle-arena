@@ -1,5 +1,33 @@
 # Competition Case Study: Playground Series Season 6 Episode 2
 
+> **Final verified result (2026-10-05):** V17 achieved `0.955754551`
+> cross-fitted OOF, `0.95394` Public LB, and **`0.95535` Private LB**
+> (submission `56862032`). This matches the displayed winning Private score.
+> Because the competition had already closed, this is a late submission and
+> does not change the historical official ranking.
+
+## Final V17 solution
+
+The final prediction is a rank ensemble:
+
+- 58% V14 validated blend;
+- 42% RealMLP V17 using raw, bin/digit, and original-source singleton statistics;
+- five canonical stratified folds with seed 42;
+- RealMLP `n_cv=2`, `n_ens=8`, 100 epochs, batch size 128;
+- candidate weight selected on four folds and evaluated on the held-out fifth.
+
+V17 standalone scored `0.955739108` OOF. Adding it to V14 improved the
+conservative OOF from `0.955746123` to `0.955754551` (`+0.000008428`). The
+selected weights by held-out fold were `[0.42, 0.37, 0.51, 0.42, 0.40]`, with
+four of five fold deltas positive.
+
+| Version | OOF ROC-AUC | Public LB | Private LB | Submission |
+|---|---:|---:|---:|---:|
+| V7 three-way rank blend | `0.955733952` | `0.95391` | `0.95532` | `56685579` |
+| V14 raw bin/digit RealMLP blend | `0.955746123` | `0.95392` | `0.95534` | `56831251` |
+| V16 equal-seed stabilization | `0.955749097` | `0.95392` | `0.95534` | `56833796` |
+| **V17 final** | **`0.955754551`** | **`0.95394`** | **`0.95535`** | **`56862032`** |
+
 > **Historical V1–V5 record.** Some earlier comparisons in this document mixed
 > public/private leaderboard columns and combined-data OOF. For the corrected
 > score audit and current V6 candidate, see the

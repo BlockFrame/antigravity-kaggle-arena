@@ -1,7 +1,7 @@
 {
-  "id": "stefanorossi1/antigravity-s6e2-v7-realmlp-gpu",
-  "title": "Antigravity S6E2 V7 RealMLP GPU",
-  "code_file": "train_v7_realmlp.py",
+  "id": "stefanorossi1/antigravity-s6e2-v17-realmlp-orig-single",
+  "title": "Antigravity S6E2 V17 RealMLP Orig Single",
+  "code_file": "run_v17_realmlp_bin_digit_orig_singletons.py",
   "language": "python",
   "kernel_type": "script",
   "is_private": "true",

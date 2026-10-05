@@ -1,5 +1,18 @@
 # Playground Series S6E2 — Reproducibility Audit and V6 Plan
 
+## Final outcome update — 2026-10-05
+
+The validation-first sequence described below culminated in V17. Kaggle
+submission `56862032` is complete and reports **`0.95394` public / `0.95535`
+private**, matching the displayed winning Private score. The final
+cross-fitted OOF is `0.955754551`.
+
+The result is a late submission: it verifies model quality but does not alter
+the competition's historical official ranking. The final improvement came from
+combining the V14 rank blend (58%) with a RealMLP representation containing
+raw categorical features, unsupervised bin/digit features, and original-source
+singleton statistics (42%).
+
 Audit date: 2026-09-28. Metric: ROC-AUC; higher is better.
 
 ## Verified position

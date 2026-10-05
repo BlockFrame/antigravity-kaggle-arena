@@ -37,7 +37,7 @@ By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with spec
 
 | Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Date Achieved | Arena CV Score | Official Kaggle Score (Private / Public) | Benchmark World LB | Status | Detailed Solution Report |
 |---|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Sep 29, 2026** | **`0.955734`** *(V7 cross-fitted OOF)* | **`0.95532` private / `0.95391` public** *(V7, Ref: 56685579)* | `0.95535` private *(winner)* | ✅ **Within `0.00003` of winner private score** | [Audit & Next Steps](docs/competitions/playground-series-s6e2-audit.md) |
+| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Oct 5, 2026** | **`0.955755`** *(V17 cross-fitted OOF)* | **`0.95535` private / `0.95394` public** *(late submission, Ref: `56862032`)* | `0.95535` private *(winner)* | 🏆 **Winner score matched** | [Final Solution Report](docs/competitions/playground-series-s6e2.md) |
 
 ---
 

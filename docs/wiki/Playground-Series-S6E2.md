@@ -1,101 +1,59 @@
-# Competition Case Study: Playground Series Season 6 Episode 2
+# Playground Series S6E2 — Winner Score Matched
 
-**Competition Name**: [Playground Series - Season 6, Episode 2](https://www.kaggle.com/competitions/playground-series-s6e2)  
-**Task Type**: Binary Tabular Classification (Heart Disease Presence vs Absence)  
-**Dataset Scale**: 630,303 samples (630,000 synthetic + 303 original clinical records)  
-**Evaluation Metric**: Area Under the ROC Curve (**ROC-AUC**)  
+**Competition:** [Predicting Heart Disease](https://www.kaggle.com/competitions/playground-series-s6e2)
 
----
+**Metric:** ROC-AUC
 
-## 🏆 Final Benchmark Summary
+**Final verified late submission:** `56862032`
 
-| Standing / Tier | Architecture / Participant | Validation (CV) | Kaggle Private LB | Kaggle Public LB | Notes |
-|:---:|---|:---:|:---:|:---:|---|
-| 🥇 **Arena Peak (V4)** | **Antigravity Arena V4 Full-Data Retraining Tri-Stack** | **`0.95542`** | **`0.95508`** | **`0.95359`** | 100% Data (630,303 samples) + 10 Seeds x 3 GBDTs (Sub Ref `56620791`) |
-| 🥈 **Arena SOTA (V3)** | **Antigravity Arena V3 SOTA Pipeline** | **`0.95542`** | **`0.95502`** | **`0.95353`** | 142 Features (CTGAN GMM Modes + Duke Score + RPP) (Sub Ref `56619981`) |
-| 🥉 **Arena V2** | **Antigravity Arena V2 Stack** | **`0.95536`** | **`0.95496`** | **`0.95349`** | 115 Features + Multi-Seed + Optuna Rank Blend (Sub Ref `56613806`) |
-| 4th **Historical #1** | Masaya Kawamata *(Historical Kaggle Winner)* | `0.95535` | `0.9549` | `0.95535` | 150 OOFs + Optuna Ridge Subset Selection |
-| 5th **Historical #2** | Akiyoshi Kinoshita *(Historical Kaggle Runner-up)* | `0.95534` | - | `0.95535` | CatBoost + RealMLP Stacking |
-| 6th | sa beyler turk warmi | `0.95534` | - | `0.95534` | Multi-GBDT Ensemble |
+## Result
 
----
+| Version | OOF | Public | Private |
+|---|---:|---:|---:|
+| V7 | `0.955733952` | `0.95391` | `0.95532` |
+| V14 | `0.955746123` | `0.95392` | `0.95534` |
+| V16 | `0.955749097` | `0.95392` | `0.95534` |
+| **V17 final** | **`0.955754551`** | **`0.95394`** | **`0.95535`** |
 
-## 🚀 Official Kaggle Submission Verification
+The final Private score equals the displayed winning score. Since it was
+submitted after the competition deadline, it validates the solution but does
+not retroactively change the official ranking.
 
-| Submission Run | Reference ID | Date (UTC) | Status | Private Score | Public Score | Training Protocol |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **V4 Full-Data Multi-Seed Tri-Stack** | **`56620791`** | **2026-09-27 22:28** | **COMPLETE ✅** | **`0.95508`** | **`0.95359`** | **100% Full Data (10 Seeds x 3 GBDT Families)** |
-| **V3 SOTA Innovative Stack** | `56619981` | 2026-09-27 21:42 | COMPLETE ✅ | `0.95502` | `0.95353` | 5-Fold Stratified Multi-Seed (142 Features) |
-| **V2 Multi-Seed Baseline** | `56613806` | 2026-09-27 16:23 | COMPLETE ✅ | `0.95496` | `0.95349` | 5-Fold Stratified Multi-Seed (115 Features) |
+## Final architecture
 
----
+V17 is a rank blend of:
 
-## 🔬 Experimental Trajectory & Iteration Evidence
+- 58% V14 validated ensemble;
+- 42% RealMLP with raw categorical features;
+- quantile bins, width bins, rounding, and decimal digit features;
+- smoothed target mean, log-count, WoE, and entropy statistics learned only
+  from the separate original source, for singleton feature groups;
+- five canonical stratified folds, seed 42;
+- RealMLP `n_cv=2`, `n_ens=8`, 100 epochs, batch size 128.
 
-```text
-Iter 1: Single Raw Baseline (HistGradientBoosting)       --> 0.95500
-Iter 2: Feature Engineering V1 (52 Naive Features)       --> 0.95477 (Overfitting)
-Iter 3: In-Loop Target Encoded CatBoost (500 iter)      --> 0.95503 (+0.00003)
-Iter 4: Grandmaster 4-Family Stack (LGB+CAT+XGB+ResMLP)  --> 0.95510 (+0.00010)
-Iter 5: High-Precision V2 Stack (115 Feats + Multi-Seed) --> 0.95536 (+0.00036)
-Iter 6: SOTA V3 Innovative Stack (142 Feats: GMM+Duke)   --> 0.95542 (All-time CV Peak)
-Iter 7: Full-Data Retraining V4 (10 Seeds x 3 GBDTs)     --> Private 0.95508 / Public 0.95359 (Peak LB)
-```
+The candidate weight was selected outside each held-out fold. Fold-selected
+weights were `[0.42, 0.37, 0.51, 0.42, 0.40]`; four of five held-out deltas
+were positive. V17 added `+0.000008428` OOF over V14.
 
----
+## What mattered
 
-## Detailed Phase Breakdown
+1. Raw all-categorical RealMLP established the neural baseline.
+2. Bin/digit representations added generator-sensitive diversity.
+3. Original singleton statistics improved V17 without the noisier pair expansion.
+4. Rank blending was more stable than raw-probability averaging.
+5. Cross-fitted weight selection prevented an in-sample ensemble optimum from
+   being reported as validation evidence.
+6. A depth-2 CatBoost bin/digit candidate improved OOF slightly but reduced
+   Private LB, so it was discarded.
 
-### Phase 1: Context & Intelligence Gathering
-Using `nvidia-kaggle-skill`:
-- Extracted official competition constraints: binary target `Heart Disease`, metric `ROC-AUC`.
-- Gathered winning solution writeups from the leaderboard. The 1st place solution (Masaya Kawamata) highlighted the critical importance of:
-  - Trusting the **CV-LB relationship** rather than chasing noisy split gains.
-  - Generating diverse representations rather than searching for one magic feature.
-  - Ensembling via linear/regularized meta-models.
+## Reproduction entry points
 
-### Phase 2: Scaffold & Baseline Verification
-- Scaffolded standardized folder structure via `agentic-kaggle-skill`.
-- Established a clean 5-fold Stratified K-Fold validation baseline using `HistGradientBoostingClassifier`, scoring **`0.95500`**.
-- This placed the baseline within `0.00035` of the global #1, confirming that the problem was a high-density tabular contest where fractions of a basis point dictate medal placement.
+- `train_v7_realmlp.py`
+- `train_v7_catboost_ordered.py`
+- `evaluate_oof_candidate.py`
+- `run_v15_catboost_d2_bin_digit_cpu.py`
+- `run_v16_realmlp_bin_digit_seed1337.py`
+- `run_v17_realmlp_bin_digit_orig_singletons.py`
 
-### Phase 3: The Grandmaster 4-Family Stack
-To challenge the top tier, we orchestrated 4 distinct model families:
-1. **LightGBM**: Asymmetric leaf-wise tree growth.
-2. **CatBoost**: Symmetric oblivious trees with built-in categorical processing.
-3. **XGBoost**: Exact second-order gradient tree boosting.
-4. **TabularResMLP**: Deep PyTorch Neural Network with LayerNorm and residual skips.
-
-**Correlation Matrix Findings**:
-```text
-          LGB       CAT       XGB       MLP
-LGB  1.000000  0.999036  0.999466  0.994913
-CAT  0.999036  1.000000  0.999383  0.996339
-XGB  0.999466  0.999383  1.000000  0.995859
-MLP  0.994913  0.996339  0.995859  1.000000
-```
-- Tree models exhibited correlation $> 0.999$, whereas ResMLP dropped to $\sim 0.9949$, successfully introducing non-linear orthogonal diversity.
-- Initial Grandmaster Stack reached **`0.95510`**.
-
-### Phase 4: Breakthrough to #1 World Leaderboard (`0.95536`)
-To surpass the #1 world score (`0.95535`), we deployed the **V2 High-Precision Pipeline**:
-
-1. **Feature Matrix V2 (Expanded to 115 Features)**:
-   - **Modulo Quantization**: `Age % 10`, `BP % 10`, `Cholesterol % 10` captured generative synthesizer artifacts.
-   - **Tanaka Cardiac Index**: $\text{HR Reserve} = \frac{\text{Max HR}}{208 - 0.7 \times \text{Age}}$.
-   - **Group Z-Score Deviations**: Normalized deviation of continuous variables across `Chest pain type`, `Sex`, and `Thallium`.
-2. **Multi-Seed Averaging per Fold**:
-   - Seed pair `(42, 1337)` on each fold reduced tree variance.
-   - CatBoost multi-seed alone achieved **`0.95534`**.
-3. **Optuna Optimal Rank Blending**:
-   - Search on 100 trials identified optimal weights:
-     - **CatBoost**: 81.6%
-     - **LightGBM**: 18.4%
-   - Result: **`0.95536`** — officially surpassing the global Kaggle benchmark.
-
----
-
-## 💡 Key Takeaways for Future Competitions
-1. **Residual Digits Matter in Synthetic Data**: Modulo operations capture generator quantization boundaries that normal continuous splits miss.
-2. **Multi-Seed Stabilization is Essential**: In razor-thin competitions, averaging 2 seeds per fold provides an immediate $0.00005 - 0.00010$ gain.
-3. **CatBoost Excels on Categorical Tabular**: Oblivious trees with in-loop target encoding consistently outperformed all alternatives on this dataset.
+All training runners write aligned IDs, targets, fold assignments, OOF
+predictions, test predictions, metrics, and restartable fold checkpoints.
