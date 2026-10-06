@@ -69,6 +69,7 @@ candidate is accepted.
 | Competition | Metric | Best verified result | Documentation |
 |---|---|---:|---|
 | Playground Series S6E2 — Predicting Heart Disease | ROC-AUC | Private `0.95535`, displayed winner score matched by late submission | [Complete V1–V17 report](docs/competitions/playground-series-s6e2.md) · [Evidence audit](docs/competitions/playground-series-s6e2-audit.md) |
+| PTCG AI Battle Challenge Playground | Simulation skill rating | Active: local CABT baseline validated; no Kaggle submission yet | [Competition report](docs/competitions/ptcg-ai-battle-playground.md) |
 
 The S6E2 result validates the workflow but is only its first fully documented
 case study. Future competitions will have separate source modules, artifacts,

@@ -9,3 +9,4 @@
 
 - [[Competitions|Portfolio]]
 - [[Playground-Series-S6E2|S6E2 — Complete Report]]
+- [[PTCG-AI-Battle-Playground|PTCG AI Battle — Active]]

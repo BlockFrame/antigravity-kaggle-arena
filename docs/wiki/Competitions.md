@@ -5,6 +5,7 @@ This index separates the general Arena documentation from the technical history 
 | Competition | Status | Best verified result | Pages |
 |---|---|---:|---|
 | Playground Series S6E2 — Predicting Heart Disease | Completed case study | Private ROC-AUC `0.95535`; displayed winner score matched by late submission | [[Playground-Series-S6E2|Full report]] · [Evidence audit](https://github.com/BlockFrame/antigravity-kaggle-arena/blob/main/docs/competitions/playground-series-s6e2-audit.md) |
+| PTCG AI Battle Challenge Playground | Active | Local CABT baseline validated; no Kaggle submission yet | [[PTCG-AI-Battle-Playground|Competition page]] |
 
 ## Required page structure
 
