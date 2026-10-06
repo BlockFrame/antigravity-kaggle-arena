@@ -1,209 +1,120 @@
-# Playground Series S6E2 — Reproducibility Audit and V6 Plan
+# Playground Series S6E2: final reproducibility audit
 
-## Final outcome update — 2026-10-05
+Audit finalized: 2026-10-06. Metric: ROC-AUC, higher is better.
 
-The validation-first sequence described below culminated in V17. Kaggle
-submission `56862032` is complete and reports **`0.95394` public / `0.95535`
-private**, matching the displayed winning Private score. The final
-cross-fitted OOF is `0.955754551`.
+## Audited claim
 
-The result is a late submission: it verifies model quality but does not alter
-the competition's historical official ranking. The final improvement came from
-combining the V14 rank blend (58%) with a RealMLP representation containing
-raw categorical features, unsupervised bin/digit features, and original-source
-singleton statistics (42%).
+The strongest supported claim is:
 
-Audit date: 2026-09-28. Metric: ROC-AUC; higher is better.
+> Late submission `56862032` scored `0.95394` Public and `0.95535` Private,
+> matching the displayed winning Private score. It does not change the closed
+> competition's official historical ranking.
 
-## Verified position
+The corresponding cross-fitted OOF score is `0.955754551`.
 
-The best submitted arena artifact found through the Kaggle API is V5
-submission `56651832`: **0.95361 public / 0.95507 private**. The winning
-write-up reports **0.95396 public / 0.95535 private** for the selected final
-submission, so the current private gap is about **0.00028**. Public scores are
-not interchangeable with private scores and are reported separately here.
+## Evidence sources
 
-The original V5 documentation quoted an OOF score over the 630,303-row
-combined dataset. This audit evaluates OOF on the 630,000 competition rows
-only; the 303 original rows are training anchors, not validation examples.
+| Claim | Source |
+|---|---|
+| Submission status and scores | Authenticated Kaggle submission history |
+| V17 standalone OOF `0.9557391082984937` | `realmlp_all_categorical_bin_digit_metrics.json` |
+| V14 base OOF `0.955746123` | Aligned V14 OOF artifact and evaluator output |
+| Final cross-fitted OOF `0.9557545510254963` | V14/V17 held-out fold evaluation |
+| Deployment weight 42% | Median of held-out selections `[0.42, 0.37, 0.51, 0.42, 0.40]` |
+| Final Public/Private `0.95394/0.95535` | Kaggle submission `56862032` |
 
-| Artifact | Synthetic-only OOF AUC | Notes |
-|---|---:|---|
-| V5 reconstructed rank blend | 0.955430235 | Cat 61.5%, LGB 20.4%, XGB 18.1% |
-| V6 OHE logistic | 0.955447125 | All features categorical; original 303 added inside each training fold |
-| **V6 fixed family rank blend** | **0.955615645** | 50% OHE logistic, 50% V5 family blend |
+No Public or Private value is presented as CV, and no CV value is presented as
+a leaderboard score.
 
-The V6 gain over reconstructed V5 is **+0.000185410 OOF AUC**. The fixed blend
-improved all five diagnostic folds. Its logistic/V5 Spearman correlation is
-`0.996622`: still high, but materially more diverse than adding more seeds of
-the same GBDT family.
+## Artifact identity
 
-This is a local result, not a Kaggle score. The generated submission has been
-checked for exact IDs, row count, columns, finite values, and range, but has
-**not** been submitted.
+The local final submission has 270,001 CSV lines: one header plus 270,000 test
+predictions.
 
-## Why the previous approach plateaued
+| Artifact | SHA-256 |
+|---|---|
+| `submission_candidate_rank_blend.csv` | `4f18ab4d3258f353ed2bb306fc0cc35448990a5ab860bc428aca110d93f86028` |
+| V17 OOF NPZ | `85eefcf17a79cc6e7704392ec420dec68141bfd830bcb068b49b3ed3e70f5f3c` |
 
-The saved GBDT predictions are extremely correlated, and additional seeds
-mostly reduce variance without introducing new ranking information. The
-winning solutions instead generated genuinely different representations and
-model families, then selected a small stable subset.
+Artifacts and competition data are not committed to Git.
 
-The strongest evidence from the competition write-ups is:
+## Validation invariants
 
-- The [1st-place solution](https://www.kaggle.com/competitions/playground-series-s6e2/writeups/1st-place-solution-diversity-selection-and-t)
-  generated roughly 150 OOF vectors across GBDTs, RealMLP, AutoGluon, RGF,
-  TabICL, multiple feature representations, and original-data statistics. It
-  used subset selection plus Ridge and warned that CV above roughly 0.95578
-  stopped translating reliably to leaderboard gains.
-- The [2nd-place solution](https://www.kaggle.com/competitions/playground-series-s6e2/writeups/2nd-place-solution-avoid-leaks-and-overfitting)
-  compared target statistics inside and outside CV, selected low-correlation
-  multi-seed candidates, and combined CatBoost with RealMLP predictions.
-- The [4th-place solution](https://www.kaggle.com/competitions/playground-series-s6e2/writeups/4th-place-solution)
-  found the signal close to linear, reported a strong all-categorical OHE
-  logistic baseline, used depth-2 stumps and neural models, and preferred rank
-  ensembling over raw-probability averaging.
-- The [20th-place solution](https://www.kaggle.com/competitions/playground-series-s6e2/writeups/20th-place-solution-private-0-95533-ridge-stac)
-  used an OOF-first workflow, rank-correlation checks, Ridge stacking, and a
-  weighted rank average rather than blind submission blending.
+Before evaluating a candidate, the pipeline requires:
 
-## Reproduce V6 locally
+1. one prediction per competition training row;
+2. identical sample IDs between base and candidate;
+3. identical targets;
+4. identical frozen fold assignments;
+5. one-dimensional finite prediction arrays;
+6. weight selection on folds different from the fold being scored;
+7. test prediction length equal to the test CSV length;
+8. valid submission ID, target column, row count, and finite range.
 
-Train the diversity model:
+## Final candidate evaluation
 
-```bash
-python src/competitions/playground_s6e2/train_v6_ohe_logistic.py \
-  --train /path/to/train.csv \
-  --test /path/to/test.csv \
-  --combined /path/to/train_combined.csv \
-  --output-dir /path/to/v6_ohe_logistic \
-  --folds 5 --seed 42 --c 3.0
-```
+The base was the fixed V14 rank blend. V17 predictions were rank-transformed
+before combination. For each held-out fold, the evaluator selected a candidate
+weight using only the other four folds.
 
-Build the conservative fixed-weight blend from the legacy V5 arrays:
+| Held-out fold | Selected V17 weight | Direction on held-out fold |
+|---:|---:|---|
+| 0 | `0.42` | Positive |
+| 1 | `0.37` | Positive |
+| 2 | `0.51` | Positive |
+| 3 | `0.42` | Positive |
+| 4 | `0.40` | Slightly negative |
 
-```bash
-python src/competitions/playground_s6e2/build_v6_rank_blend.py \
-  --train /path/to/train.csv \
-  --test /path/to/test.csv \
-  --combined /path/to/train_combined.csv \
-  --logistic-oof /path/to/v6_ohe_logistic/ohe_logistic_oof.npz \
-  --logistic-test /path/to/v6_ohe_logistic/ohe_logistic_test.npy \
-  --v5-oof-dir /path/to/legacy/oof \
-  --output-dir /path/to/v6_rank_blend \
-  --logistic-weight 0.5
-```
+The 42% median was used for deployment. Cross-fitted OOF improved by
+`0.000008428` over V14.
 
-The blend script verifies that the generated rows in `train_combined.csv` are
-value-aligned with `train.csv` before reusing legacy arrays. It refuses to
-silently slice or reorder predictions.
+## Negative controls and rejected evidence
 
-## Next experiments, in priority order
+- Re-adding a representation already contained in the base correctly selected
+  zero or negligible weight during evaluator testing.
+- V15 CatBoost raised aggregate local blend OOF to `0.955750482` but reduced
+  Kaggle Private from `0.95534` to `0.95533`; it is not part of V17.
+- V16 seed averaging reached `0.955749097` OOF but did not change the Private
+  score beyond `0.95534`.
+- Earlier `0.95536` and `0.95542` values were local/legacy CV figures and are
+  not described as verified Kaggle scores.
 
-1. Add a true RealMLP portfolio with periodic embeddings and aligned fold IDs.
-   This is the clearest missing family in both the top solutions and the local
-   correlation matrix. The V7 runner is now available at
-   `src/competitions/playground_s6e2/train_v7_realmlp.py` and checkpoints each
-   completed outer fold.
-2. Add CatBoost `Ordered` and depth-2 stump variants on raw/all-categorical
-   representations. Save every OOF/test pair with IDs and fold metadata.
-3. Add original-data-only target statistics computed inside each outer fold;
-   compare augmentation versus statistics rather than mixing them blindly.
-4. Replace the existing in-sample meta score with cross-fitted Ridge using the
-   exact same folds as the base OOF generation. Never report a Ridge score
-   obtained by fitting and evaluating on the same OOF matrix.
-5. Use repeated seeds or a second fixed split to estimate whether a gain of
-   less than `0.00005` is stable. Do not select on one split alone.
+## Leakage boundary
 
-### V7 RealMLP GPU run
+Competition targets were used only inside each training partition for
+supervised transforms. V17's original-source statistics were learned from the
+separate original dataset and consisted of singleton target mean, log-count,
+WoE, and entropy features. Original pair statistics were disabled.
 
-The Kaggle bootstrap prefers the checksum-verified PyTabKit 1.7.3 wheel from
-the attached public dataset, so it does not depend on competition-runtime
-internet access. Kaggle runs also fail fast if the backend provisions a
-CPU-only PyTorch image despite a requested GPU.
+The external original data may legitimately improve similarity to the hidden
+test distribution, but it also creates a dependency that must be disclosed in
+any reproduction.
 
-The runner defaults to the published high-performing configuration: 100
-epochs, batch size 128, `n_cv=2`, `n_ens=8`, Mish, PLR embeddings and
-`1-auc_ovr` early stopping. On Kaggle it auto-discovers both current and legacy
-input mount layouts and installs the pinned `pytabkit` runtime only when it is
-missing.
+## Compute boundary
 
-```bash
-python src/competitions/playground_s6e2/train_v7_realmlp.py \
-  --train /path/to/train.csv \
-  --test /path/to/test.csv \
-  --original /path/to/Heart_Disease_Prediction.csv \
-  --output-dir artifacts/v7_realmlp \
-  --fold-file artifacts/canonical_folds_seed42.npz
-```
+- RealMLP: Kaggle NVIDIA T4, with CUDA fail-fast.
+- CatBoost candidates: Kaggle CPU.
+- Five folds with checkpoints; remote execution continued independently of the
+  local Mac after a Kaggle version was running.
+- No training script automatically submitted to the competition.
 
-Use `--folds-to-run 0,1` to split a long GPU experiment across jobs. Reusing
-the same output directory with `--resume` skips completed checkpoints. No
-competition submission is performed by this script.
+## Known limitations
 
-When the run completes, evaluate its marginal contribution without fitting a
-weight on the same rows used to report it:
+- The official competition is closed, so the result is a late-submission
+  validation rather than an official rank.
+- Kaggle scores are rounded for display; equality at five decimals does not
+  prove equality of the unrounded hidden-test AUC.
+- The final difference over V14 is very small. Fold consistency and the final
+  Kaggle result support it, but they do not make the gain universal.
+- A single competition cannot establish that the workflow will generalize to
+  other tabular tasks.
+- Token counters measure runtime processing, including cached repeated context,
+  not unique authored content or model-training compute.
 
-```bash
-python src/competitions/playground_s6e2/evaluate_oof_candidate.py \
-  --base-oof /path/to/v6_rank_blend_oof.npz \
-  --candidate-oof /path/to/realmlp_all_categorical_oof.npz \
-  --grid-step 0.05 \
-  --output-json /path/to/realmlp_vs_v6.json
-```
+## Reproduction references
 
-The evaluator chooses the candidate weight on four folds and scores it on the
-held-out fifth fold, repeating this for every fold. Its full-OOF optimum is
-labelled diagnostic-only and is never treated as the honest blend score.
-
-### V7 CatBoost Ordered run
-
-The aligned CatBoost runner uses the same canonical outer folds, keeps the 13
-raw columns categorical in the all-categorical representation, and appends the
-68 external-original statistics as numeric features. Each completed fold is a
-restartable checkpoint.
-
-The fold-0 gate justified completing the run: standalone CatBoost reached
-`0.956006581` versus `0.956020169` for V6, but their Spearman correlation was
-`0.998827950`. A diagnostic rank blend at 45% CatBoost reached `0.956093066`,
-or `+0.000072897` over V6 on that fold. This single-fold weight is evidence of
-complementarity, not a final or cross-fitted blend estimate.
-
-```bash
-python src/competitions/playground_s6e2/train_v7_catboost_ordered.py \
-  --train /path/to/train.csv \
-  --test /path/to/test.csv \
-  --combined /path/to/train_combined.csv \
-  --output-dir artifacts/v7_catboost_ordered_d3_allcat \
-  --fold-file artifacts/canonical_folds_seed42.npz \
-  --boosting-type Ordered \
-  --depth 3 \
-  --representation all_categorical
-```
-
-No submission or upload is performed by either V7 trainer.
-
-### V7 three-way rank blend
-
-The final staged cross-fit first fixes the previously validated V6/RealMLP
-rank blend at 30/70, then selects the CatBoost weight on four folds and scores
-it on the held-out fifth fold. Selected CatBoost weights were
-`[0.25, 0.30, 0.20, 0.25, 0.25]`; the median deployment weights are 22.5% V6,
-52.5% RealMLP, and 25% CatBoost.
-
-The honest cross-fitted OOF AUC is `0.955733952`, a gain of `+0.000013855`
-over the V6/RealMLP base and `+0.000118307` over V6. Four held-out folds
-improve; fold 1 changes by only `-0.000002102`. The local submission is built
-by `src/competitions/playground_s6e2/build_v7_three_way_rank_blend.py`; it is
-not uploaded automatically. With explicit user approval it was submitted as
-Kaggle reference `56685579`, scoring `0.95391` public and `0.95532` private.
-That is `0.00003` below the winner's `0.95535` private benchmark.
-
-## Method provenance
-
-The leakage, split-boundary, and aggregate-only EDA checks followed the
-Scientific Agent Skills procedures:
-
-Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026).
-*Scientific Agent Skills: Library Procedural Knowledge Research Agents*.
-arXiv:2609.00065. https://doi.org/10.48550/arXiv.2609.00065
+- [Complete solution report](playground-series-s6e2.md)
+- `src/competitions/playground_s6e2/evaluate_oof_candidate.py`
+- `src/competitions/playground_s6e2/run_v17_realmlp_bin_digit_orig_singletons.py`
+- `src/core/cv_folds.py`
+- `src/core/verify_submission.py`

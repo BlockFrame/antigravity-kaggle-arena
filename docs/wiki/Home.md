@@ -1,30 +1,31 @@
-# Welcome to the Antigravity Kaggle Arena Wiki 🚀
+# Codex Kaggle Arena Wiki
 
-Welcome to the official documentation and knowledge base of the **Antigravity Kaggle Arena**, an autonomous agentic competitive machine learning framework powered by **Google DeepMind's Antigravity**.
+This wiki documents a human-directed, OpenAI Codex-assisted competitive
+machine-learning workflow. The repository's historical GitHub slug still uses
+`antigravity-kaggle-arena`, but Antigravity is no longer the active agent.
 
----
+## Start here
 
-## 📚 Table of Contents
+- [[01-Mission-and-Architecture|Mission, evidence loop, and Codex workflow]]
+- [[02-Skills-and-Modules|Skills, feature engineering, and core modules]]
+- [[03-Evolution-Playbook|V1–V17 evolution playbook]]
+- [[Playground-Series-S6E2|Complete S6E2 solution and submission report]]
 
-### Core System & Architecture
-- [[01-Mission-and-Architecture|01. Mission, Operating Loop & Ecosystem]]
-- [[02-Skills-and-Modules|02. Skills, Feature Engineering & Core Modules]]
-- [[03-Evolution-Playbook|03. Self-Improvement & Winning Playbook]]
+## Verified benchmark
 
-### Competition Reports & Benchmarks
-- [[Playground-Series-S6E2|Predicting Heart Disease (Playground Series S6E2) — Zero to #1 Worldwide Walkthrough]]
+| Competition | Metric | Cross-fitted OOF | Kaggle Private / Public | Winner benchmark | Status |
+|---|---|---:|---:|---:|---|
+| [Predicting Heart Disease](https://www.kaggle.com/competitions/playground-series-s6e2) | ROC-AUC | **`0.955754551`** | **`0.95535` / `0.95394`** | `0.95535` Private | **Winner score matched** |
 
----
+Submission `56862032` was made after the competition closed. It validates the
+technical result but does not alter the official historical ranking.
 
-## 🏆 Current Benchmark Highlights
+## What changed
 
-| Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Date Achieved | Arena CV Score | Official Kaggle Score (Private / Public) | Benchmark World LB | Status | Detailed Report |
-|---|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Oct 5, 2026** | **`0.955755`** | **`0.95535`** / **`0.95394`** *(late submission `56862032`)* | `0.95535` | 🏆 **Winner score matched** | [[Playground-Series-S6E2|Read Report 📖]] |
-
----
-
-## 🎯 Quick Navigation
-- Want to know how the agent operates end-to-end? Read [[01-Mission-and-Architecture|Mission & Architecture]].
-- Curious about the mathematical formulations (Tanaka reserve, Bayesian target encoding)? Check [[02-Skills-and-Modules|Skills & Core Modules]].
-- Discover how we reduced stochastic variance and captured synthetic artifacts to beat the world #1: Read [[Playground-Series-S6E2|Playground S6E2 Case Study]].
+- The project is now documented as **Codex Kaggle Arena**.
+- CV, Public, and Private scores are never mixed.
+- The full report covers accepted and rejected experiments from V1 through V17.
+- Technical decisions, invoked skills, prompting strategy, and Codex token
+  counters are disclosed.
+- GitHub Wiki deployment now copies versioned documentation instead of
+  regenerating obsolete score claims.

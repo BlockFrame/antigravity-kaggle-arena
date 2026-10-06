@@ -1,172 +1,242 @@
 <p align="center">
-  <img src="./assets/banner.svg" alt="Antigravity Kaggle Arena Banner" width="100%"/>
+  <img src="./assets/codex-kaggle-arena-banner.png" alt="Codex Kaggle Arena: tabular data, model ensemble, and leaderboard journey" width="100%"/>
 </p>
 
-<h1 align="center">🚀 Antigravity Kaggle Arena</h1>
+<h1 align="center">Codex Kaggle Arena</h1>
 
 <p align="center">
-  <strong>Autonomous Agentic Competitive Machine Learning Framework powered by Google DeepMind's Antigravity</strong>
+  <strong>A human-directed, Codex-assisted competitive machine-learning workflow built around reproducible OOF evidence.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/topics/kaggle"><img src="https://img.shields.io/badge/Platform-Kaggle-20BEFF?logo=kaggle&logoColor=white" alt="Kaggle"/></a>
-  <a href="https://github.com/topics/machine-learning"><img src="https://img.shields.io/badge/ML-GBDT%20%2B%20Neural-FF6F00?logo=scikitlearn&logoColor=white" alt="Machine Learning"/></a>
-  <a href="https://github.com/topics/deep-learning"><img src="https://img.shields.io/badge/Deep%20Learning-PyTorch-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch"/></a>
-  <a href="https://github.com/topics/agentic-ai"><img src="https://img.shields.io/badge/Framework-Antigravity%20Agentic-4285F4?logo=google&logoColor=white" alt="Antigravity"/></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg" alt="License"/></a>
-  <a href="https://github.com/python/cpython"><img src="https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.14-blue?logo=python&logoColor=white" alt="Python Version"/></a>
+  <a href="https://www.kaggle.com/competitions/playground-series-s6e2"><img src="https://img.shields.io/badge/Kaggle-S6E2-20BEFF?logo=kaggle&logoColor=white" alt="Kaggle S6E2"/></a>
+  <a href="https://openai.com/codex/"><img src="https://img.shields.io/badge/Agent-OpenAI%20Codex-111111?logo=openai&logoColor=white" alt="OpenAI Codex"/></a>
+  <img src="https://img.shields.io/badge/Private%20ROC--AUC-0.95535-DAA520" alt="Private ROC-AUC 0.95535"/>
+  <img src="https://img.shields.io/badge/Status-Winner%20score%20matched-success" alt="Winner score matched"/>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg" alt="Apache 2.0 License"/></a>
 </p>
 
----
+> The GitHub repository keeps its historical slug, `antigravity-kaggle-arena`,
+> so existing links remain valid. The active workflow and documentation now use
+> **OpenAI Codex**, not Antigravity.
 
-## 📌 Overview
+## Verified result
 
-**Antigravity Kaggle Arena** is an autonomous, self-improving machine learning framework designed to participate, iterate, and achieve **Gold-Medal / #1 World Leaderboard** standards across Kaggle competitions.
+On 5 October 2026, V17 matched the displayed winning Private leaderboard score
+for Kaggle Playground Series S6E2.
 
-By combining Google DeepMind's **Antigravity Agentic Pair Programmer** with specialized community skills ([`nvidia-kaggle`](https://github.com/NVIDIA/nvidia-kaggle) by NVIDIA and [`scientific-agent-skills`](https://github.com/K-Dense-AI/scientific-agent-skills) by K-Dense-AI), the arena automates the complete competitive lifecycle:
-1. **Competition Intelligence**: Autonomous retrieval and semantic distillation of official metrics, rules, and Grandmaster solution writeups via [`nvidia-kaggle-skill`](https://github.com/NVIDIA/nvidia-kaggle).
-2. **Domain & Scientific Discovery**: Statistical, clinical, and tabular feature exploration powered by the extensive library of [`scientific-agent-skills`](https://github.com/K-Dense-AI/scientific-agent-skills).
-3. **Leakage-Free Validation First**: Strict in-loop target encoding and stratified K-Fold schemas.
-4. **Advanced Feature Engineering**: Multi-scale continuous binning, digit modulo residuals, domain physiological ratios, and group Z-score aggregations.
-5. **Multi-Family Heterogeneous Modeling**: Ensembles combining asymmetric trees (LightGBM), symmetric oblivious trees (CatBoost), exact depth-wise trees (XGBoost), and Deep Residual Tabular Networks (PyTorch).
-6. **Continuous Self-Improvement**: Automated logging of architectural lessons into an evolutionary knowledge base for subsequent challenges.
+| Evidence | Value |
+|---|---:|
+| Final cross-fitted OOF ROC-AUC | **`0.955754551`** |
+| Kaggle Public score | **`0.95394`** |
+| Kaggle Private score | **`0.95535`** |
+| Winning Private benchmark | **`0.95535`** |
+| Kaggle submission | **`56862032`** |
+| Final blend | **58% V14 + 42% V17 RealMLP** |
 
----
+This was a **late submission** after the competition closed. It validates the
+technical result but does not retroactively change the official historical
+ranking. Read the [complete solution and submission report](docs/competitions/playground-series-s6e2.md).
 
-## 🏆 Arena Leaderboard & Competition Tracker
+## What the project actually is
 
-| Competition (Common Name) | Kaggle Link | Track / Domain | Metric | Date Achieved | Arena CV Score | Official Kaggle Score (Private / Public) | Benchmark World LB | Status | Detailed Solution Report |
-|---|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Predicting Heart Disease** (`playground-series-s6e2`) | [View on Kaggle 🔗](https://www.kaggle.com/competitions/playground-series-s6e2) | Tabular / Clinical | **ROC-AUC** | **Oct 5, 2026** | **`0.955755`** *(V17 cross-fitted OOF)* | **`0.95535` private / `0.95394` public** *(late submission, Ref: `56862032`)* | `0.95535` private *(winner)* | 🏆 **Winner score matched** | [Final Solution Report](docs/competitions/playground-series-s6e2.md) |
+This is not a claim that an agent independently won a Kaggle competition. It
+is a human-in-the-loop research process:
 
----
+- the user set the objective, kept the work moving, enabled Kaggle compute,
+  challenged weak assumptions, and explicitly authorized submissions;
+- Codex inspected evidence, changed code, managed remote training, evaluated
+  OOF artifacts, proposed the next experiment, and documented the result;
+- Kaggle CPU and GPU sessions performed the long-running model training;
+- every accepted ensemble change was evaluated against frozen fold IDs before
+  consuming a leaderboard submission.
 
-## 🏗️ Architecture & Operating Flow
+The operating rule was simple: **do not confuse a local CV peak with a Kaggle
+score, and do not stop at an interesting model when the objective is a verified
+leaderboard result.**
+
+## How V17 was reached
 
 ```mermaid
-flowchart TB
-    subgraph S1["1. INTELLIGENCE & DOMAIN DISCOVERY"]
-        direction LR
-        KAG["Kaggle Competition Target"] --> INTEL["nvidia-kaggle-skill\n• Rules & Constraints\n• Winner Writeups (Masaya #1)"]
-        SCI["K-Dense Scientific Skills\n• Clinical / Domain Priors\n• Statistical Explorations"] --> INTEL
-    end
-
-    subgraph S2["2. RIGOROUS VALIDATION FOUNDATION"]
-        direction LR
-        INTEL --> SCAFF["Scaffold Competition\nWorkspace Layout"]
-        SCAFF --> SPLIT["Deterministic Folds (5-Fold Stratified)\n• Strict Train/Val Partitioning\n• Frozen Fold IDs"]
-    end
-
-    subgraph S3["3. ZERO-LEAKAGE FEATURE PIPELINE"]
-        direction TB
-        FE_ENG["Feature Matrix V2 (115+ Features)\n• Modulo Remainder Residuals (col % 10, % 5)\n• Multi-Scale Quantile & Uniform Binning\n• Domain Formulas (Tanaka Cardiac Reserve, BP/Chol)"]
-        TE_LOOP["In-Loop Bayesian Target Encoding\n(Strictly fitted on Train Folds only)"]
-        Z_SCORE["Group Normalized Z-Scores\n(Relative Deviations by Category)"]
-        FE_ENG --> TE_LOOP --> Z_SCORE
-    end
-
-    subgraph S4["4. HETEROGENEOUS MULTI-MODEL STACK"]
-        direction LR
-        M1["CatBoost (Multi-Seed 42, 1337)\nSymmetric Oblivious Trees"]
-        M2["LightGBM (Multi-Seed 42, 1337)\nLeaf-wise Asymmetric Trees"]
-        M3["XGBoost\nExact Gradient Boosting"]
-        M4["TabularResMLP (PyTorch)\nLayerNorm + SiLU + Skip Connections"]
-    end
-
-    subgraph S5["5. META-ENSEMBLING & SANITY GATE"]
-        direction LR
-        OPT["Optuna Bayesian Optimization\n• Percentile Rank Blending\n• 81.6% CatBoost + 18.4% LightGBM"]
-        GATE["verify_submission.py\n• Zero NaN / Inf Check\n• Row Alignment Check\n• Probability Bounds [0, 1]"]
-        OPT --> GATE
-    end
-
-    subgraph S6["6. CONTINUOUS EVOLUTIONARY LEARNING"]
-        direction LR
-        GATE --> SUBMIT["Final Scored Submission\n(Target: 0.95536)"]
-        SUBMIT --> LOG["Evolution Knowledge Base\n(EVOLUTION_LOG.md)\n• Retrospective Auditing\n• Autonomous Skill Upgrades"]
-    end
-
-    SPLIT --> FE_ENG
-    Z_SCORE --> S4
-    S4 --> OPT
+flowchart LR
+    A[Audit existing V1-V5<br/>separate OOF, Public, Private] --> B[Freeze five stratified folds<br/>seed 42]
+    B --> C[V6 OHE logistic diversity<br/>plus reconstructed tree blend]
+    C --> D[V7 RealMLP all-categorical<br/>GPU T4]
+    D --> E[V7 three-way rank blend<br/>Private 0.95532]
+    E --> F[Representation and seed search<br/>V8-V13]
+    F --> G[V14 raw plus bin/digit RealMLP<br/>Private 0.95534]
+    G --> H[Stress tests<br/>V15 CatBoost and V16 seed blend]
+    H --> I[V17 bin/digit plus original<br/>singleton statistics]
+    I --> J[Cross-fitted 58/42 rank blend<br/>Private 0.95535]
 ```
 
----
+The decisive progression was:
 
-## 📂 Repository Structure
+1. **Correct the scoreboard.** Earlier documentation mixed CV, Public, and
+   Private values. The project first established V5 at `0.95507` Private and a
+   real gap of `0.00028` to the winning `0.95535`.
+2. **Freeze the validation boundary.** All later candidates used the same five
+   stratified folds, aligned IDs, targets, fold assignments, OOF predictions,
+   and test predictions.
+3. **Add diversity, not more near-identical trees.** V6 added an OHE logistic
+   representation; V7 added RealMLP and a shallow Ordered CatBoost model.
+4. **Move training to Kaggle.** CPU models ran on Kaggle CPU; RealMLP variants
+   ran on NVIDIA T4 after the account/session GPU provisioning issue was fixed.
+5. **Test representations systematically.** Hybrid columns, second seeds,
+   larger neural ensembles, raw-only categorical input, bin/digit features,
+   and original-dataset statistics were each isolated as separate candidates.
+6. **Select weights out of fold.** Candidate weights were chosen on four folds
+   and scored on the held-out fifth fold, preventing an in-sample blend optimum
+   from being presented as validation evidence.
+7. **Use leaderboard failures as evidence.** V15 slightly improved local OOF
+   but reduced Private LB to `0.95533`; it was discarded rather than rationalized.
+8. **Keep the smallest useful original-data prior.** V17 retained singleton
+   target mean, log-count, WoE, and entropy statistics and removed noisier pair
+   statistics. Its 42% blend weight was positive on four of five held-out folds.
+
+## Final technical design
+
+V17 is a percentile-rank ensemble. V14 is itself a rank blend, so the expanded
+deployment weights are approximately:
+
+| Component | Effective weight | Why it remained |
+|---|---:|---|
+| V6 OHE/tree diversity blend | `9.135%` | Linear/tree representation diversity |
+| RealMLP raw all-categorical | `21.315%` | Strong compact neural baseline |
+| Ordered CatBoost depth 3 | `10.150%` | Shallow tree complement |
+| RealMLP raw + bin/digit | `17.400%` | Generator-sensitive discretization signal |
+| V17 RealMLP + original singletons | **`42.000%`** | Strongest marginal candidate |
+
+The V17 model used 630,000 competition rows, 270 original-source training rows,
+100 features, five folds, seed 42, `n_cv=2`, `n_ens=8`, 100 epochs, batch size
+128, and CUDA. Original data was used only to derive smoothed external
+statistics; validation targets were never used to build those features.
+
+## User prompting approach
+
+The collaboration used short, outcome-oriented prompts rather than one giant
+specification. The pattern is reproducible:
+
+- **Persistent objective:** “continue until we reach or exceed the first.”
+- **Delegated momentum:** short commands such as “vai”, “prosegui”, and
+  “verifica” authorized the next safe research step without prescribing code.
+- **Frequent operational checks:** requests for remaining time, stuck jobs,
+  CPU/GPU choice, quota, and whether training survives closing the local PC.
+- **Evidence challenges:** repeated questions about distance from the top,
+  whether the solution was merely copying winners, and what would happen if a
+  run failed forced explicit uncertainty and fallback planning.
+- **Human-controlled gates:** Kaggle submissions and GitHub publication happened
+  only after explicit approval; training could proceed without automatic upload.
+- **Infrastructure cooperation:** the user enabled Kaggle T4 x2 and resolved
+  account verification/session settings while Codex supplied probes and checks.
+
+This style worked because the objective stayed stable while implementation
+details remained adaptive. The full prompting analysis is in the
+[competition report](docs/competitions/playground-series-s6e2.md).
+
+## Skills and supporting tools
+
+The project installed 166 K-Dense skills plus the NVIDIA Kaggle skill in the
+project-scoped `.agents/skills/` directory. The following skills were actually
+invoked during this work:
+
+| Skill | Role in the project |
+|---|---|
+| Codex `skill-installer` | Installed and verified project-scoped skill packages |
+| [`nvidia-kaggle-skill`](https://github.com/NVIDIA/nvidia-kaggle) | Kaggle metadata, kernel lifecycle, quota checks, artifact retrieval, and guarded submissions |
+| [`exploratory-data-analysis`](https://github.com/K-Dense-AI/scientific-agent-skills) | Dataset structure, distributions, synthetic/original split, leakage review |
+| `scikit-learn` | Frozen stratified folds, ROC-AUC, OOF alignment, rank blending |
+| `statistical-analysis` | Fold-level deltas, stability checks, conservative candidate acceptance |
+| Browser control | Diagnosed the Kaggle accelerator/session state visible in the signed-in UI |
+| `openai-docs` | Checked Codex/Headroom configuration during token-optimization work |
+| `imagegen` | Generated the current Codex-aligned repository banner; it did not affect modeling |
+
+Skill instructions shaped the workflow, but model selection remained governed
+by measured artifacts. See [Skills & Modules](docs/wiki/02-Skills-and-Modules.md).
+
+## Token transparency
+
+Codex session counter snapshot immediately after the first V17 publication
+(`2026-10-05 21:29 UTC`):
+
+| Counter | Tokens |
+|---|---:|
+| Total processed | **`82,233,374`** |
+| Input | `81,945,846` |
+| Cached input | `77,965,568` (`95.14%` of input) |
+| Non-cached input | `3,980,278` |
+| Output | `287,528` |
+| Reasoning output | `91,760` *(subset of output)* |
+
+These are Codex runtime counters for the complete project conversation from
+28 September through publication, including repeatedly processed cached
+context and tool results. They are **not** 82 million unique written tokens,
+not a per-skill allocation, and not a direct billing figure. Headroom savings
+were global across Codex activity and could not be attributed reliably to this
+repository, so they are intentionally excluded from the project total.
+
+## Repository map
 
 ```text
 .
-├── README.md                          # Repository hub & master overview
-├── LICENSE                            # Apache 2.0 Open Source License
-├── requirements.txt                   # Production environment dependencies
+├── README.md
+├── assets/
+│   └── codex-kaggle-arena-banner.png
 ├── docs/
-│   ├── wiki/
-│   │   ├── 01-mission-and-architecture.md  # Core mission, agentic loop & tooling
-│   │   ├── 02-skills-and-modules.md        # Technical breakdown of custom skills
-│   │   └── 03-evolution-playbook.md        # Lessons learned & self-improvement logs
-│   └── competitions/
-│       └── playground-series-s6e2.md       # Full end-to-end benchmark walkthrough
-└── src/
-    ├── core/
-    │   ├── feature_engineering_v2.py       # Multi-scale binning, modulo & Z-scores
-    │   ├── in_loop_target_encoder.py       # Strict leakage-free Bayesian target encoder
-    │   ├── tabular_mlp.py                  # PyTorch Tabular Residual Neural Network
-    │   ├── ridge_ensemble.py               # Ridge stacking & rank averaging module
-    │   └── verify_submission.py            # Automated submission validator & sanity gate
-    └── competitions/
-        └── playground_s6e2/
-            ├── train_v2_multiseed.py       # Winning multi-seed training pipeline
-            └── train_grandmaster_stack.py  # 4-family heterogeneous ensemble runner
+│   ├── competitions/
+│   │   ├── playground-series-s6e2.md
+│   │   └── playground-series-s6e2-audit.md
+│   └── wiki/
+├── src/
+│   ├── core/
+│   │   ├── cv_folds.py
+│   │   ├── feature_engineering_v2.py
+│   │   ├── in_loop_target_encoder.py
+│   │   ├── ridge_ensemble.py
+│   │   ├── tabular_mlp.py
+│   │   └── verify_submission.py
+│   └── competitions/playground_s6e2/
+│       ├── evaluate_oof_candidate.py
+│       ├── train_v7_realmlp.py
+│       ├── train_v7_catboost_ordered.py
+│       ├── run_v15_catboost_d2_bin_digit_cpu.py
+│       ├── run_v16_realmlp_bin_digit_seed1337.py
+│       └── run_v17_realmlp_bin_digit_orig_singletons.py
+└── tests/
 ```
 
----
+## Reproduction boundary
 
-## 🚀 Quickstart & Reproduction
+The repository contains trainers, runners, evaluation logic, and integrity
+tests. Competition data, original-source data, trained artifacts, and Kaggle
+credentials are deliberately not committed.
 
-### 1. Prerequisites
-- Python 3.10+ (tested up to Python 3.14 on macOS Apple Silicon and Linux).
-- Kaggle API credentials (save token to `~/.kaggle/access_token` or export `KAGGLE_API_TOKEN`).
+The final training entry point is:
 
-### 2. Environment Setup
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/antigravity-kaggle-arena.git
-cd antigravity-kaggle-arena
-
-# Create virtual environment
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
+python src/competitions/playground_s6e2/run_v17_realmlp_bin_digit_orig_singletons.py
 ```
 
-### 3. Run the V6 OHE-logistic diversity model
+It is designed for a Kaggle environment containing the competition dataset,
+the original dataset, and `pytabkit-model`. It writes restartable fold
+checkpoints plus aligned OOF and test artifacts. Submission remains a separate,
+explicit action.
+
+Run the repository checks with:
+
 ```bash
-python src/competitions/playground_s6e2/train_v6_ohe_logistic.py \
-  --train /path/to/train.csv \
-  --test /path/to/test.csv \
-  --combined /path/to/train_combined.csv \
-  --output-dir artifacts/v6_ohe_logistic \
-  --c 3.0
+python -m unittest discover -s tests -v
 ```
 
-This writes aligned OOF/test predictions, fold IDs, metrics, and a local
-submission candidate. It never submits to Kaggle. The conservative V6 rank
-blend can then be built with `build_v6_rank_blend.py`; see the
-[competition audit](docs/competitions/playground-series-s6e2-audit.md) for the
-measured result and command.
+## Documentation
 
----
+- [Complete V1–V17 solution and submission report](docs/competitions/playground-series-s6e2.md)
+- [Reproducibility and evidence audit](docs/competitions/playground-series-s6e2-audit.md)
+- [Mission and Codex operating loop](docs/wiki/01-mission-and-architecture.md)
+- [Skills and core modules](docs/wiki/02-skills-and-modules.md)
+- [Evolution playbook](docs/wiki/03-evolution-playbook.md)
+- [GitHub Wiki](https://github.com/BlockFrame/antigravity-kaggle-arena/wiki)
 
-## 📖 Documentation & Wiki
-- 📘 [Mission, Architecture & Agentic Workflow](docs/wiki/01-mission-and-architecture.md)
-- 🛠️ [Skills & Core Modules Specification](docs/wiki/02-skills-and-modules.md)
-- 🧠 [Self-Improvement & Evolution Playbook](docs/wiki/03-evolution-playbook.md)
-- 🔬 [Playground Series S6E2: validation-first competition walkthrough](docs/competitions/playground-series-s6e2.md)
+## License
 
----
-
-## 📄 License
-This project is open-source under the [Apache License 2.0](LICENSE).
+Apache License 2.0. See [LICENSE](LICENSE).

@@ -1,93 +1,92 @@
-# Wiki: Project Mission & Agentic Architecture
+# Mission and Codex operating architecture
 
-## 1. Executive Summary & Objective
+## Mission
 
-The primary objective of the **Antigravity Kaggle Arena** is to pioneer an autonomous, rigorous, and continuously evolving competitive machine learning system using **Google DeepMind's Antigravity AI coding assistant**.
+Codex Kaggle Arena turns a user-defined competitive objective into a sequence
+of reproducible experiments. It is designed for the part of tabular competition
+work where a few ten-thousandths of ROC-AUC separate a strong result from the
+target.
 
-Competitive data science on Kaggle typically suffers from fragmented workflows:
-- Feature generation is often ad-hoc and prone to target leakage.
-- Ensembling frequently falls into the trap of stacking collinear models without true statistical diversity.
-- Learnings from one competition are rarely formalized into programmatic tools for the next challenge.
+The project is human-directed:
 
-This project bridges these gaps by establishing an **autonomous agentic pair programming framework** that treats every Kaggle competition as a validation-first problem, extracts intelligence from top Grandmasters, constructs robust multi-model pipelines, and archives evolutionary breakthroughs.
+- the user owns the goal, compute access, risk decisions, submissions, and
+  publication authorization;
+- Codex owns repository inspection, implementation, experiment orchestration,
+  evidence comparison, and documentation;
+- Kaggle provides remote CPU/GPU execution and the final external score.
 
----
-
-## 2. Integrated Tooling & Skills Ecosystem
-
-The system synthesizes two cutting-edge agentic toolkits:
+## Evidence loop
 
 ```mermaid
-flowchart TB
-    subgraph S1["1. INTELLIGENCE & DOMAIN DISCOVERY"]
-        direction LR
-        KAG["Kaggle Competition Target"] --> INTEL["nvidia-kaggle-skill\n• Rules & Constraints\n• Winner Writeups (Masaya #1)"]
-        SCI["K-Dense Scientific Skills\n• Clinical / Domain Priors\n• Statistical Explorations"] --> INTEL
-    end
-
-    subgraph S2["2. RIGOROUS VALIDATION FOUNDATION"]
-        direction LR
-        INTEL --> SCAFF["Scaffold Competition\nWorkspace Layout"]
-        SCAFF --> SPLIT["Deterministic Folds (5-Fold Stratified)\n• Strict Train/Val Partitioning\n• Frozen Fold IDs"]
-    end
-
-    subgraph S3["3. ZERO-LEAKAGE FEATURE PIPELINE"]
-        direction TB
-        FE_ENG["Feature Matrix V2 (115+ Features)\n• Modulo Remainder Residuals (col % 10, % 5)\n• Multi-Scale Quantile & Uniform Binning\n• Domain Formulas (Tanaka Cardiac Reserve, BP/Chol)"]
-        TE_LOOP["In-Loop Bayesian Target Encoding\n(Strictly fitted on Train Folds only)"]
-        Z_SCORE["Group Normalized Z-Scores\n(Relative Deviations by Category)"]
-        FE_ENG --> TE_LOOP --> Z_SCORE
-    end
-
-    subgraph S4["4. HETEROGENEOUS MULTI-MODEL STACK"]
-        direction LR
-        M1["CatBoost (Multi-Seed 42, 1337)\nSymmetric Oblivious Trees"]
-        M2["LightGBM (Multi-Seed 42, 1337)\nLeaf-wise Asymmetric Trees"]
-        M3["XGBoost\nExact Gradient Boosting"]
-        M4["TabularResMLP (PyTorch)\nLayerNorm + SiLU + Skip Connections"]
-    end
-
-    subgraph S5["5. META-ENSEMBLING & SANITY GATE"]
-        direction LR
-        OPT["Optuna Bayesian Optimization\n• Percentile Rank Blending\n• 81.6% CatBoost + 18.4% LightGBM"]
-        GATE["verify_submission.py\n• Zero NaN / Inf Check\n• Row Alignment Check\n• Probability Bounds [0, 1]"]
-        OPT --> GATE
-    end
-
-    subgraph S6["6. CONTINUOUS EVOLUTIONARY LEARNING"]
-        direction LR
-        GATE --> SUBMIT["Final Scored Submission\n(Target: 0.95536)"]
-        SUBMIT --> LOG["Evolution Knowledge Base\n(EVOLUTION_LOG.md)\n• Retrospective Auditing\n• Autonomous Skill Upgrades"]
-    end
-
-    SPLIT --> FE_ENG
-    Z_SCORE --> S4
-    S4 --> OPT
+flowchart TD
+    U[User objective and constraints] --> I[Codex inspects current evidence]
+    I --> H[Form one falsifiable next hypothesis]
+    H --> R[Implement restartable runner]
+    R --> K[Kaggle CPU or GPU training]
+    K --> A[Download aligned OOF and test artifacts]
+    A --> C[Cross-fitted candidate comparison]
+    C --> D{Stable marginal gain?}
+    D -- No --> X[Record rejection and change hypothesis]
+    D -- Yes --> G[Submission integrity gate]
+    G --> P{User explicitly approves submission?}
+    P -- No --> W[Keep local candidate only]
+    P -- Yes --> S[Submit and record Public/Private]
+    S --> T{Objective reached?}
+    T -- No --> H
+    T -- Yes --> O[Publish code, report, audit, and wiki]
+    X --> H
 ```
 
----
+## Non-negotiable boundaries
 
-## 3. The 5-Stage Agentic Operating Loop
+1. **One frozen validation split.** Candidates share IDs, targets, and fold IDs.
+2. **No global supervised preprocessing.** Target-dependent transforms are fit
+   inside the active training partition.
+3. **OOF is not leaderboard.** Every score is labeled by source.
+4. **Marginal value beats standalone value.** A model enters the ensemble only
+   if it improves the fixed base outside its selection fold.
+5. **Submission is separate from training.** Remote jobs cannot spend Kaggle
+   submissions automatically.
+6. **Failures remain documented.** A local gain that regresses Private LB is
+   evidence, not something to hide.
 
-Every competition entered by the Arena follows a strict 5-stage lifecycle:
+## Compute architecture
 
-### Stage 1: Intelligence Discovery & Metric Extraction
-- Queries the Kaggle API to inspect the official scoring metric, data dictionary, submission format, and hidden-test constraints.
-- Employs `fetch_leaderboard_writeups.py` and `fetch_writeup.py` to harvest insights, validation splits, and structural nuances from past winners.
+```text
+Local Codex workspace
+  ├─ code, tests, fold definitions, evaluators
+  ├─ Kaggle API orchestration and artifact download
+  └─ local OOF analysis and documentation
 
-### Stage 2: Validation-First Architecture & Scaffolding
-- Instantiates a clean, standardized project layout (`input/`, `src/`, `models/`, `oof/`, `submissions/`).
-- Freezes a deterministic Stratified K-Fold / Group K-Fold split column before any feature engineering begins.
+Kaggle CPU
+  └─ CatBoost candidates and long shallow-tree folds
 
-### Stage 3: Feature Engineering with Zero Leakage
-- Generates multi-scale representations (binning, digit modulo residuals, domain physiological formulas, group Z-scores).
-- All statistics and target encodings are calculated **strictly within the training folds** of each split.
+Kaggle NVIDIA T4
+  └─ RealMLP candidates with CUDA fail-fast and fold checkpoints
 
-### Stage 4: Heterogeneous Multi-Family Modeling & Blending
-- Trains diverse model families (CatBoost, LightGBM, XGBoost, and PyTorch Tabular ResMLP).
-- Executes multi-seed averaging per fold to suppress stochastic split variance.
-- Applies Bayesian optimization via Optuna to determine optimal rank-averaging weights.
+GitHub
+  ├─ source repository
+  └─ synchronized Wiki generated from versioned documentation
+```
 
-### Stage 5: Verification Gate & Evolutionary Feedback
-- Runs `verify_submission.py` to guarantee non-null values, row integrity, column alignment, and valid probability boundaries.
-- Records all performance deltas, correlation metrics, and architectural decisions into `EVOLUTION_LOG.md`.
+## Decision protocol
+
+Each candidate answers one question: new model family, representation, seed,
+feature source, or ensemble policy. Changing several at once would make a gain
+impossible to attribute.
+
+For an ensemble candidate:
+
+1. rank-transform base and candidate predictions;
+2. choose the candidate weight on four folds;
+3. evaluate it on the fifth;
+4. repeat for all held-out folds;
+5. inspect total delta, fold signs, correlation, and weight stability;
+6. use the median held-out weight for a possible test blend;
+7. submit only after user approval.
+
+## Outcome
+
+This loop moved the verified S6E2 Private score from V5's `0.95507` to V17's
+`0.95535`, matching the displayed winner benchmark through late submission
+`56862032`.
