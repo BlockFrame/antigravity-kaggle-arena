@@ -331,7 +331,7 @@ the NVIDIA Kaggle skill. Only the subset below was invoked for this result:
 | K-Dense `statistical-analysis` | Fold deltas, stability assessment, conservative acceptance of micro-gains |
 | Browser control | Inspected signed-in Kaggle session state during GPU diagnosis |
 | `openai-docs` | Codex and Headroom configuration checks; unrelated to model scoring |
-| `imagegen` | Generated the updated Codex repository banner after the result |
+| `imagegen` | Produced an earlier banner concept, later replaced by a code-native SVG; it did not affect modeling |
 
 Method provenance for the K-Dense procedures:
 

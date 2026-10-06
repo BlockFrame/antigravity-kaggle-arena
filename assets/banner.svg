@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic Kaggle Arena</title>
+  <desc id="desc">Human-directed competitive machine learning with Codex, Antigravity, and Kaggle</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#071426"/><stop offset="0.55" stop-color="#10274a"/><stop offset="1" stop-color="#301c59"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#20beff"/><stop offset="1" stop-color="#a77bff"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#8fcaff" stroke-opacity=".08"/></pattern>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="320" rx="24" fill="url(#bg)"/><rect width="1200" height="320" rx="24" fill="url(#grid)"/>
+  <circle cx="1020" cy="72" r="190" fill="#7653ff" opacity=".08"/><circle cx="112" cy="160" r="74" fill="#20beff" opacity=".12" filter="url(#glow)"/>
+  <g transform="translate(50 91)"><path d="M33 16h58v22c0 35-20 61-29 67-9-6-29-32-29-67z" fill="none" stroke="url(#accent)" stroke-width="7"/><path d="M33 28H16v10c0 20 13 32 31 34M91 28h17v10c0 20-13 32-31 34M62 105v20M38 134h48" fill="none" stroke="#d9ecff" stroke-width="7" stroke-linecap="round"/><path d="m62 31 7 14 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z" fill="#f5c451"/></g>
+  <text x="190" y="100" fill="#8fdcff" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="4">HUMAN-DIRECTED • AGENT-ASSISTED</text>
+  <text x="190" y="151" fill="#ffffff" font-family="Inter,Arial,sans-serif" font-size="45" font-weight="800" letter-spacing="1">AGENTIC KAGGLE ARENA</text>
+  <text x="190" y="188" fill="#c4d5eb" font-family="Inter,Arial,sans-serif" font-size="20">A repeatable research loop for many competitions</text>
+  <g font-family="Inter,Arial,sans-serif" font-size="14" font-weight="700">
+    <g transform="translate(190 222)"><rect width="126" height="34" rx="17" fill="#ffffff" opacity=".1"/><text x="63" y="22" text-anchor="middle" fill="#fff">OPENAI CODEX</text></g>
+    <g transform="translate(328 222)"><rect width="166" height="34" rx="17" fill="#ffffff" opacity=".1"/><text x="83" y="22" text-anchor="middle" fill="#fff">ANTIGRAVITY</text></g>
+    <g transform="translate(506 222)"><rect width="144" height="34" rx="17" fill="#ffffff" opacity=".1"/><text x="72" y="22" text-anchor="middle" fill="#fff">NVIDIA KAGGLE</text></g>
+    <g transform="translate(662 222)"><rect width="150" height="34" rx="17" fill="#ffffff" opacity=".1"/><text x="75" y="22" text-anchor="middle" fill="#fff">VALIDATION FIRST</text></g>
+  </g>
+  <g transform="translate(900 77)"><rect width="246" height="166" rx="18" fill="#071426" fill-opacity=".68" stroke="#8f7aff" stroke-opacity=".65"/><text x="123" y="38" text-anchor="middle" fill="#9edfff" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2">ARENA LOOP</text><text x="123" y="82" text-anchor="middle" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="800">BUILD • TEST • LEARN</text><path d="M35 105h176" stroke="url(#accent)" stroke-width="2"/><text x="123" y="137" text-anchor="middle" fill="#c4d5eb" font-family="Inter,Arial,sans-serif" font-size="15">OOF → Kaggle → Knowledge</text></g>
+  <rect x="1" y="1" width="1198" height="318" rx="23" fill="none" stroke="#9bdcff" stroke-opacity=".18" stroke-width="2"/>
+</svg>

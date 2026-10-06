@@ -29,6 +29,7 @@ jobs:
           cp docs/wiki/01-mission-and-architecture.md wiki_sync/01-Mission-and-Architecture.md
           cp docs/wiki/02-skills-and-modules.md wiki_sync/02-Skills-and-Modules.md
           cp docs/wiki/03-evolution-playbook.md wiki_sync/03-Evolution-Playbook.md
+          cp docs/wiki/Competitions.md wiki_sync/Competitions.md
           cp docs/competitions/playground-series-s6e2.md wiki_sync/Playground-Series-S6E2.md
           cp docs/wiki/_Sidebar.md wiki_sync/_Sidebar.md
           cp docs/wiki/_Footer.md wiki_sync/_Footer.md

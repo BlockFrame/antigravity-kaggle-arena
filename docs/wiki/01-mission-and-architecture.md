@@ -1,92 +1,48 @@
-# Mission and Codex operating architecture
+# Mission and operating architecture
 
 ## Mission
 
-Codex Kaggle Arena turns a user-defined competitive objective into a sequence
-of reproducible experiments. It is designed for the part of tabular competition
-work where a few ten-thousandths of ROC-AUC separate a strong result from the
-target.
+The Arena converts a user-defined competitive objective into a traceable sequence of experiments. It survives changes in competition, agent, model family, and accelerator: Codex and Antigravity are participants in a stable evidence loop, not the identity of the project.
 
-The project is human-directed:
+## Responsibility model
 
-- the user owns the goal, compute access, risk decisions, submissions, and
-  publication authorization;
-- Codex owns repository inspection, implementation, experiment orchestration,
-  evidence comparison, and documentation;
-- Kaggle provides remote CPU/GPU execution and the final external score.
-
-## Evidence loop
+| Participant | Responsibility |
+|---|---|
+| Human competitor | Sets the objective, resolves strategic choices, enables account resources, and approves submissions/publication |
+| Codex or Antigravity | Inspects evidence, proposes hypotheses, edits and tests code, operates remote runs, and reports uncertainty |
+| Specialist skills | Supply procedures for Kaggle operations, EDA, statistics, validation, and reporting |
+| Kaggle | Provides datasets, CPU/GPU/TPU runtimes, submissions, and leaderboard evidence |
+| GitHub | Preserves source, experiment history, audits, and the public Wiki |
 
 ```mermaid
 flowchart TD
-    U[User objective and constraints] --> I[Codex inspects current evidence]
-    I --> H[Form one falsifiable next hypothesis]
-    H --> R[Implement restartable runner]
-    R --> K[Kaggle CPU or GPU training]
-    K --> A[Download aligned OOF and test artifacts]
-    A --> C[Cross-fitted candidate comparison]
+    U[Human objective] --> I[Agent inspects evidence]
+    I --> H[One falsifiable hypothesis]
+    H --> R[Implement and test restartable runner]
+    R --> K[Kaggle CPU / GPU / TPU]
+    K --> A[Aligned OOF and test artifacts]
+    A --> C[Cross-fitted comparison]
     C --> D{Stable marginal gain?}
-    D -- No --> X[Record rejection and change hypothesis]
-    D -- Yes --> G[Submission integrity gate]
-    G --> P{User explicitly approves submission?}
-    P -- No --> W[Keep local candidate only]
-    P -- Yes --> S[Submit and record Public/Private]
-    S --> T{Objective reached?}
-    T -- No --> H
-    T -- Yes --> O[Publish code, report, audit, and wiki]
+    D -- No --> X[Record rejection]
+    D -- Yes --> G[Integrity and leakage gate]
+    G --> P{Human approves submission?}
+    P -- No --> W[Retain locally]
+    P -- Yes --> S[Submit and label LB evidence]
+    S --> N[Competition-specific report]
     X --> H
+    N --> H
 ```
 
 ## Non-negotiable boundaries
 
-1. **One frozen validation split.** Candidates share IDs, targets, and fold IDs.
-2. **No global supervised preprocessing.** Target-dependent transforms are fit
-   inside the active training partition.
-3. **OOF is not leaderboard.** Every score is labeled by source.
-4. **Marginal value beats standalone value.** A model enters the ensemble only
-   if it improves the fixed base outside its selection fold.
-5. **Submission is separate from training.** Remote jobs cannot spend Kaggle
-   submissions automatically.
-6. **Failures remain documented.** A local gain that regresses Private LB is
-   evidence, not something to hide.
+1. Freeze validation before serious model search.
+2. Fit supervised preprocessing only inside the active training partition.
+3. Label every score as OOF, Public LB, or Private LB.
+4. Judge ensemble additions by marginal held-out value.
+5. Store IDs, folds, predictions, metrics, and restartable checkpoints.
+6. Keep remote training separate from submission.
+7. Publish important failures and limitations.
 
 ## Compute architecture
 
-```text
-Local Codex workspace
-  ├─ code, tests, fold definitions, evaluators
-  ├─ Kaggle API orchestration and artifact download
-  └─ local OOF analysis and documentation
-
-Kaggle CPU
-  └─ CatBoost candidates and long shallow-tree folds
-
-Kaggle NVIDIA T4
-  └─ RealMLP candidates with CUDA fail-fast and fold checkpoints
-
-GitHub
-  ├─ source repository
-  └─ synchronized Wiki generated from versioned documentation
-```
-
-## Decision protocol
-
-Each candidate answers one question: new model family, representation, seed,
-feature source, or ensemble policy. Changing several at once would make a gain
-impossible to attribute.
-
-For an ensemble candidate:
-
-1. rank-transform base and candidate predictions;
-2. choose the candidate weight on four folds;
-3. evaluate it on the fifth;
-4. repeat for all held-out folds;
-5. inspect total delta, fold signs, correlation, and weight stability;
-6. use the median held-out weight for a possible test blend;
-7. submit only after user approval.
-
-## Outcome
-
-This loop moved the verified S6E2 Private score from V5's `0.95507` to V17's
-`0.95535`, matching the displayed winner benchmark through late submission
-`56862032`.
+Local workspaces hold code, tests, folds, evaluation, and reports. Kaggle CPU runs long tree or linear workloads; Kaggle GPU supports neural and accelerated boosting workloads; TPU is selected only when the implementation can use it. GitHub synchronizes the version-controlled Wiki. This lets training continue when the local computer is closed and lets a future agent reconstruct every decision.

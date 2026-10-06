@@ -1,6 +1,12 @@
-# Skills and core modules
+# Skills and reusable modules
 
-## Invoked Codex skills
+## Agent and skill ecosystem
+
+Codex and Antigravity provide the agentic workspaces. Skills add focused
+procedures that can be reused by either environment; they do not replace
+validation evidence or human approval.
+
+## Skills invoked in the S6E2 case study
 
 The project installed 166 K-Dense Scientific Agent Skills and one NVIDIA Kaggle
 skill under `.agents/skills/`. Installation does not imply use: the audited
@@ -15,7 +21,7 @@ workflow invoked only the relevant subset.
 | K-Dense `statistical-analysis` | Guided fold-delta and stability interpretation for very small gains |
 | Browser control | Diagnosed the signed-in Kaggle accelerator state when metadata and runtime disagreed |
 | `openai-docs` | Used for Codex/Headroom configuration checks, not for model selection |
-| `imagegen` | Generated the current repository banner after V17 was complete |
+| `imagegen` | Produced an earlier banner concept, later replaced by the code-native SVG; it did not affect modeling |
 
 The skills supplied procedures and safety boundaries. They did not replace
 measured experiment evidence.
